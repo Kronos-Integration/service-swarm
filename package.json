@@ -1,0 +1,4 @@
+{
+    "main": "src/service-swarm.mjs",
+    "module": "src/service-swarm.mjs"
+}
