@@ -3,8 +3,7 @@ import { Service } from "@kronos-integration/service";
 
 
 /**
- * HTTP server
- * @property {http.Server} server only present if state is running
+ * swarm detecting sync service
  */
 export class ServiceSwarm extends Service {
   /**
