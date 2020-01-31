@@ -1,0 +1,9 @@
+
+node_modules
+build
+*.log
+*.dump
+*.node
+.DS_Store
+.test
+.tmp
