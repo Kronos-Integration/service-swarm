@@ -9,8 +9,6 @@ jobs:
   include:
     - stage: test
       node_js:
-        - '-12'
-        - '-13'
         - 12.14.1
         - 13.7.0
       script:
