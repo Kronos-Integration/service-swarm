@@ -1,4 +1,6 @@
 {
+  "name": "@kronos-integration/service-swarm",
+  "description": "manage a set of remote services",
   "version": "0.0.0-semantic-release",
   "sideEffects": false,
   "type": "module",
@@ -33,5 +35,9 @@
       "arlac77/template-kronos-module",
       "arlac77/template-github"
     ]
+  },
+  "dependencies": {
+    "@kronos-integration/service": "^8.3.23",
+    "model-attributes": "^4.1.6"
   }
 }

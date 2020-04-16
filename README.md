@@ -7,3 +7,22 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/Kronos-Integration/service-swarm/badge.svg)](https://snyk.io/test/github/Kronos-Integration/service-swarm)
 [![codecov.io](http://codecov.io/github/Kronos-Integration/service-swarm/coverage.svg?branch=master)](http://codecov.io/github/Kronos-Integration/service-swarm?branch=master)
 [![Coverage Status](https://coveralls.io/repos/Kronos-Integration/service-swarm/badge.svg)](https://coveralls.io/r/Kronos-Integration/service-swarm)
+
+# @kronos-integration/service-swarm
+
+Manage a set of remote services
+
+# API
+
+
+# install
+
+With [npm](http://npmjs.org) do:
+
+```shell
+npm install @kronos-integration/service-swarm
+```
+
+# license
+
+BSD-2-Clause
