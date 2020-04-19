@@ -18,7 +18,7 @@ export class ServiceSwarm extends Service {
       Service.configurationAttributes,
       createAttributes({
         peers: {
-          description: "well known peer addressses",
+          description: "well known peer addresses",
           needsRestart: true,
           type: "string"
         },
