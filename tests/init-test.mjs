@@ -9,16 +9,19 @@ test("start", async t => {
   const sp = new StandaloneServiceProvider();
   const ic = new InitializationContext(sp);
 
-  const ss = new ServiceSwarm(
-    {
-    },
-    ic
-  );
+  const topic = "11-3232-334545-fff-ggff6f-gr-dff5";
 
-  await ss.start();
+  const bootstrap = [`127.0.0.1:61418`];
 
-  await new Promise((resolve) => setTimeout(resolve,1500));
+  const ss1 = new ServiceSwarm({ topic }, ic);
 
-  t.is(ss.state, 'running');
+  const ss2 = new ServiceSwarm({ topic, bootstrap }, ic);
+
+  await ss1.start();
+  await ss2.start();
+
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  t.is(ss1.state, "running");
+  t.is(ss2.state, "running");
 });
-

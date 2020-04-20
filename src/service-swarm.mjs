@@ -18,8 +18,13 @@ export class ServiceSwarm extends Service {
     return mergeAttributes(
       Service.configurationAttributes,
       createAttributes({
-        peers: {
+        bootstrap: {
           description: "well known peer addresses",
+          needsRestart: true,
+          type: "string"
+        },
+        topic: {
+          description: "peer lookup topic",
           needsRestart: true,
           type: "string"
         }
@@ -27,44 +32,37 @@ export class ServiceSwarm extends Service {
     );
   }
 
-  constructor(...args) {
-    super(...args);
-
-    // look for peers listed under this topic
-    const topic = createHash("sha256").update("xmy-hyperswarm-topic").digest();
-
-    Object.defineProperties(this, {
-      swarm: { value: hyperswarm() },
-      topic: { value: topic }
-    });
-  }
-
   async _start() {
-    this.swarm.join(this.topic, {
+    const swarm = hyperswarm({ bootstrap: this.bootstrap });
+
+    this.swarm = swarm;
+
+    const topic = createHash("sha256").update(this.topic).digest();
+
+    swarm.join(topic, {
       lookup: true, // find & connect to peers
       announce: true // optional- announce self as a connection target
     });
 
-    this.swarm.on("connection", (socket, details) => {
+    swarm.on("disconnection", (socket, details) => {
+      console.log("disconnection", details);
+    });
+
+    swarm.on("peer", peer => {
+      console.log("peer", peer);
+    });
+
+    swarm.on("connection", (socket, details) => {
       console.log("connection", details);
 
       // you can now use the socket as a stream, eg:
       // process.stdin.pipe(socket).pipe(process.stdout)
-    });
-
-    this.swarm.on('disconnection', (socket, details) => {
-      console.log("disconnection", details);
-    });
-
-    this.swarm.on('peer', (peer) => {
-      console.log("peer", peer);
     });
   }
 
   async _stop() {
     this.swarm.leave(this.topic);
   }
-
 }
 
 export default ServiceSwarm;
