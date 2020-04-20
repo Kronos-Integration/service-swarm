@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@kronos-integration/service": "^8.3.23",
+    "hyperswarm": "^2.12.1",
     "model-attributes": "^4.1.6"
   },
   "devDependencies": {
