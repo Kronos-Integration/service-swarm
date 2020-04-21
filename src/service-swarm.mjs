@@ -61,7 +61,8 @@ export class ServiceSwarm extends Service {
   }
 
   async _stop() {
-    this.swarm.leave(this.topic);
+    const topic = createHash("sha256").update(this.topic).digest();
+    this.swarm.leave(topic);
   }
 }
 
