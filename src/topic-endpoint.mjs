@@ -47,14 +47,16 @@ export class TopicEndpoint extends SendEndpoint {
   }
 
   async receive(arg) {
-   // const socket = this.topic.socket;
+    let goOn = 'closed';
 
-    // console.log(`${this}: send ${arg}`);
-    this.owner.info(`${this}: send ${arg}`);
+    const socket = this.topic.socket;
 
+    if (socket) {
+      goOn = socket.write(arg,'utf8',cb => {
+        this.owner.info('chunk flushed');
+      });
+    }
 
-   // if (socket) {
-   //   socket.write(arg);
-   // }
+    this.owner.info(`${this}: send(${goOn}) ${arg}`);
   }
 }

@@ -24,7 +24,15 @@ export class Topic {
           .update(service.key + name)
           .digest()
       },
-      socket: { set: value => (socket = value), get: () => socket }
+      socket: {
+        set: value => {
+          socket = value;
+          if (socket) {
+            socket.pipe(process.stdout);
+          }
+        },
+        get: () => socket
+      }
     });
   }
 
@@ -32,13 +40,21 @@ export class Topic {
     const p = JSON.stringify(peer.to);
 
     if (!this.peers.has(p)) {
-      if(!peer.to) {
-        console.log(peer);
+      if (!peer.to) {
+        //console.log("missing to ?",peer);
         return;
       }
 
-      this.service.info(`add peer ${JSON.stringify(peer.to)}`);
-      this.peers.add(JSON.stringify(peer.to));
+      this.service.info(`add peer ${p}`);
+      this.peers.add(p);
+    }
+  }
+
+  removePeer(peer) {
+    const p = JSON.stringify(peer.to);
+    if (this.peers.has(p)) {
+      this.service.info(`delete peer ${p}`);
+      this.peers.delete(p);
     }
   }
 

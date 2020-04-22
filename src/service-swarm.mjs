@@ -81,10 +81,6 @@ export class ServiceSwarm extends Service {
       });
     }
 
-    swarm.on("disconnection", (socket, details) => {
-      console.log("disconnection", details);
-    });
-
     swarm.on("peer", peer => {
       const topic = this.topics.get(peer.topic);
       topic.addPeer(peer);
@@ -95,7 +91,7 @@ export class ServiceSwarm extends Service {
     });
 
     swarm.on("updated", key => {
-      this.info(`updated: ${key}`);
+      this.info(`updated: ${JSON.stringify(key)}`);
     });
 
     swarm.on("connection", (socket, details) => {
@@ -106,11 +102,21 @@ export class ServiceSwarm extends Service {
 
         socket.write("hello world");
         topic.socket = socket;
-      } else {
-        // console.log("connection", details);
       }
-      // you can now use the socket as a stream, eg:
       // process.stdin.pipe(socket).pipe(process.stdout)
+    });
+
+    swarm.on("disconnection", (socket, details) => {
+      if (details.peer) {
+        this.info(`disconnection: ${JSON.stringify(details.peer)}`);
+        const topic = this.topics.get(details.peer.topic);
+        if(topic) {
+          topic.removePeer(details.peer);
+        }
+        else {
+          this.info(`disconnection: unknown topic`);
+        }
+      }
     });
 
     for (const topic of this.topics.values()) {
