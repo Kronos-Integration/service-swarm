@@ -48,7 +48,7 @@ on demand create topic endpoints
 -   `definition` **([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))** 
 -   `ic`  
 
-Returns **Class** RouteSendEndpoint if name starts with 'topic'
+Returns **Class** TopicEndpoint if name starts with 'topic.'
 
 ### name
 
