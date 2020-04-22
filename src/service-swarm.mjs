@@ -91,9 +91,9 @@ export class ServiceSwarm extends Service {
       this.info(`peer-rejected: ${JSON.stringify(peer)}`);
     });
 
-    swarm.on("updated", key => {
+    /*swarm.on("updated", key => {
       this.info(`updated: ${JSON.stringify(key)}`);
-    });
+    });*/
 
     swarm.on("connection", (socket, details) => {
       if (details.peer) {
@@ -101,7 +101,8 @@ export class ServiceSwarm extends Service {
 
         console.log(`connection for topic ${topic.name}`);
 
-        socket.write("hello world");
+        socket.pipe(process.stdout);
+        //socket.write("hello world");
         topic.socket = socket;
       }
       // process.stdin.pipe(socket).pipe(process.stdout)

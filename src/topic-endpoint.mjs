@@ -1,4 +1,4 @@
-import { ReceiveEndpoint } from "@kronos-integration/endpoint";
+import { SendEndpoint } from "@kronos-integration/endpoint";
 
 const TOPIC_NAME_PREFIX = "topic.";
 
@@ -7,7 +7,7 @@ const TOPIC_NAME_PREFIX = "topic.";
  *
  * @property {Topic} topic
  */
-export class TopicEndpoint extends ReceiveEndpoint {
+export class TopicEndpoint extends SendEndpoint {
   static isTopicName(name) {
     return name.startsWith(TOPIC_NAME_PREFIX);
   }
@@ -21,13 +21,35 @@ export class TopicEndpoint extends ReceiveEndpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
+    let socket;
+
     const topicName = options.topic
       ? options.topic
       : name.replace(TOPIC_NAME_PREFIX, "");
 
-    Object.defineProperty(this, "topic", {
-      value: owner.createTopic(topicName, options)
+    Object.defineProperties(this, {
+      topic: {
+        value: owner.createTopic(topicName, options)
+      },
+      socket: {
+        set: value => {
+          socket = value;
+
+          for (const other of this.connections()) {
+            if (socket) {
+              owner.trace(`${this} open ${other}`);
+              this.openConnection(other);
+            } else {
+              owner.trace(`${this} close ${other}`);
+              this.closeConnection(other);
+            }
+          }
+        },
+        get: () => socket
+      }
     });
+
+    this.topic.addEndpoint(this);
   }
 
   get toStringAttributes() {
@@ -38,26 +60,24 @@ export class TopicEndpoint extends ReceiveEndpoint {
     return [...super.jsonAttributes, "topic"];
   }
 
-  get isOut() {
+ /* get isOut() {
     return true;
-  }
-  
+  }*/
+
   get isIn() {
     return true;
   }
 
   get isOpen() {
-    return this.topic && this.topic.socket !== undefined;
+    return this.socket !== undefined;
   }
 
   async receive(arg) {
-    let goOn = 'closed';
+    let goOn = "closed";
 
-    const socket = this.topic.socket;
-
-    if (socket) {
-      goOn = socket.write(arg,'utf8',cb => {
-        this.owner.info('chunk flushed');
+    if (this.socket) {
+      goOn = socket.write(arg, "utf8", cb => {
+        this.owner.info("chunk flushed");
       });
     }
 

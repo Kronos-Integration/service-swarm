@@ -13,13 +13,13 @@ test("start / stop", async t => {
 
   const options = {
     didConnect: endpoint => {
-      console.log("connected",endpoint);
+      console.log("connected", endpoint);
       return async () => {
-        console.log("disconnect",r);
+        console.log("disconnect", r);
       };
     },
     receive: r => {
-      console.log("received",r);
+      console.log("XXX received", r);
       return "xxx";
     }
   };
@@ -40,6 +40,7 @@ test("start / stop", async t => {
 
   t.is(ss1.endpoints["topic.t1"].name, "topic.t1");
   t.is(ss1.endpoints["topic.t1"].topic, ss1.topicsByName.get("t1"));
+  t.true(ss1.topicsByName.get("t1").endpoints.has(ss1.endpoints["topic.t1"]));
 
   const ss2 = await sp.declareService({
     type: ServiceSwarm,
@@ -55,14 +56,20 @@ test("start / stop", async t => {
 
   await new Promise(resolve => setTimeout(resolve, 50000));
 
-  //ss1.endpoints["topic.t1"].addConnection(s1);
-  //ss2.endpoints["topic.t1"].addConnection(s2);
-
-  //t.is(ss1.endpoints["topic.t1"].isOpen, true, "ss1.topic.t1 isOpen");
-  //t.is(ss2.endpoints["topic.t1"].isOpen, true, "ss2.topic.t1 isOpen");
-
   t.is(ss1.state, "running");
   t.is(ss2.state, "running");
+
+  t.true(ss1.endpoints["topic.t1"].isConnected(s1));
+  t.true(ss2.endpoints["topic.t1"].isConnected(s2));
+
+  //t.truthy(ss1.endpoints["topic.t1"].socket);
+
+  ss1.endpoints["topic.t1"].send("hello from ss1.topic.t1");
+
+  /*
+  t.is(ss1.endpoints["topic.t1"].isOpen, true, "ss1.topic.t1 isOpen");
+  t.is(ss2.endpoints["topic.t1"].isOpen, true, "ss2.topic.t1 isOpen");
+  */
 
   //s1.send("hello");
   await Promise.all([ss1.stop(), ss2.stop()]);

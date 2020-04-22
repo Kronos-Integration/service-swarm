@@ -17,6 +17,7 @@ export class Topic {
     Object.defineProperties(this, {
       service: { value: service },
       peers: { value: new Set() },
+      endpoints: { value: new Set() },
       name: { value: name },
       options: { value: { lookup: true, announce: true, ...options } },
       key: {
@@ -27,13 +28,16 @@ export class Topic {
       socket: {
         set: value => {
           socket = value;
-          if (socket) {
-            socket.pipe(process.stdout);
-          }
+          this.endpoints.forEach(e => e.socket = socket);
         },
         get: () => socket
       }
     });
+  }
+
+  addEndpoint(endpoit)
+  {
+    this.endpoints.add(endpoit);
   }
 
   addPeer(peer) {
