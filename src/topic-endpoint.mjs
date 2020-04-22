@@ -1,9 +1,19 @@
 import { SendEndpoint } from "@kronos-integration/endpoint";
 
+
+
+const TOPIC_NAME_PREFIX = 'topic.';
+
 /**
  * Endpoint to link against a swarm topic
+ * 
+ * @property {Topic} topic
  */
-export class TopicEndpoint extends Endpoint {
+export class TopicEndpoint extends SendEndpoint {
+  static isTopicName(name) {
+    return name.startsWith(TOPIC_NAME_PREFIX);
+  }
+
   /**
    * @param {string} name endpoint name
    * @param {Object} owner owner of the endpoint
@@ -13,13 +23,12 @@ export class TopicEndpoint extends Endpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    const topicName = options.topic ? options.topic : name.replace(/^topic./);
- 
+    const topicName = options.topic ? options.topic : name.replace(TOPIC_NAME_PREFIX,'');
+
     Object.defineProperty(this, "topic", {
-        value: owner.createTopic(topicName);
+      value: owner.createTopic(topicName, options)
     });
   }
-
 
   get toStringAttributes() {
     return { ...super.toStringAttributes, topic: "topic" };
@@ -27,5 +36,9 @@ export class TopicEndpoint extends Endpoint {
 
   get jsonAttributes() {
     return [...super.jsonAttributes, "topic"];
+  }
+
+  get isIn() {
+    return true;
   }
 }

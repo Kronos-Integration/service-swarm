@@ -1,5 +1,4 @@
 import hyperswarm from "hyperswarm";
-import { createHash } from "crypto";
 import { mergeAttributes, createAttributes } from "model-attributes";
 import { Service } from "@kronos-integration/service";
 import { Topic } from "./topic.mjs";
@@ -9,6 +8,8 @@ import { TopicEndpoint } from "./topic-endpoint.mjs";
  * swarm detecting sync service
  */
 export class ServiceSwarm extends Service {
+  //topics = new Map();
+
   /**
    * @return {string} 'swarm'
    */
@@ -25,54 +26,52 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "string"
         },
-        topic: {
-          description: "peer lookup topic",
+        key: {
+          description: "topic initial key",
           needsRestart: true,
-          setter(value, attribute) {
-            this.topic = createHash("sha256").update(value).digest();
-          },
           type: "string"
         }
       })
     );
   }
 
-  topics = new Map();
-
-  createTopic(name)
-  {
-    let topic = this.topics(name);
-    if(!topic) {
-      topic = new Topic(this,name);
-      this.topics.set(name,topic);
+  createTopic(name, options) {
+    if (!this.topics) {
+      this.topics = new Map(); // TODO why ?
     }
- 
+
+    let topic = this.topics.get(name);
+    if (!topic) {
+      topic = new Topic(this, name);
+      this.topics.set(name, topic, options);
+    }
+
     return topic;
   }
-  
+
   /**
    * on demand create topic endpoints
    * @param {string} name
    * @param {Object|string} definition
-   * @return {Class} RouteSendEndpoint if name starts with 'topic'
+   * @return {Class} TopicEndpoint if name starts with 'topic.'
    */
   endpointFactoryFromConfig(name, definition, ic) {
-    if (name.startsWith("topic") {
+    if (TopicEndpoint.isTopicName(name)) {
       return TopicEndpoint;
     }
 
     return super.endpointFactoryFromConfig(name, definition, ic);
   }
-  
+
   async _start() {
     const swarm = hyperswarm({ bootstrap: this.bootstrap });
 
     this.swarm = swarm;
 
-    swarm.join(this.topic, {
-      lookup: true, // find & connect to peers
-      announce: true // optional- announce self as a connection target
-    });
+    for (const topic of this.topics.values()) {
+      this.info(`join ${topic.name} ${JSON.stringify(topic.options)}`);
+      this.swarm.join(topic.key, topic.options);
+    }
 
     swarm.on("disconnection", (socket, details) => {
       console.log("disconnection", details);
@@ -84,14 +83,16 @@ export class ServiceSwarm extends Service {
 
     swarm.on("connection", (socket, details) => {
       console.log("connection", details);
-
       // you can now use the socket as a stream, eg:
       // process.stdin.pipe(socket).pipe(process.stdout)
     });
   }
 
   async _stop() {
-    this.swarm.leave(this.topic);
+    for (const topic of this.topics.values()) {
+      this.info(`leave ${topic.name}`);
+      this.swarm.leave(topic.key);
+    }
   }
 }
 

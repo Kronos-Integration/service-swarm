@@ -22,8 +22,15 @@ Manage a set of remote services
 ### Table of Contents
 
 -   [ServiceSwarm](#serviceswarm)
-    -   [Parameters](#parameters)
+    -   [endpointFactoryFromConfig](#endpointfactoryfromconfig)
+        -   [Parameters](#parameters)
     -   [name](#name)
+-   [Topic](#topic)
+    -   [Parameters](#parameters-1)
+    -   [Properties](#properties)
+-   [TopicEndpoint](#topicendpoint)
+    -   [Parameters](#parameters-2)
+    -   [Properties](#properties-1)
 
 ## ServiceSwarm
 
@@ -31,13 +38,52 @@ Manage a set of remote services
 
 swarm detecting sync service
 
-### Parameters
+### endpointFactoryFromConfig
 
--   `args` **...any** 
+on demand create topic endpoints
+
+#### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `definition` **([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))** 
+-   `ic`  
+
+Returns **Class** RouteSendEndpoint if name starts with 'topic'
 
 ### name
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 'swarm'
+
+## Topic
+
+### Parameters
+
+-   `service` **[ServiceSwarm](#serviceswarm)** 
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+
+### Properties
+
+-   `service` **[ServiceSwarm](#serviceswarm)** 
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+-   `key` **[Buffer](https://nodejs.org/api/buffer.html)** 
+
+## TopicEndpoint
+
+**Extends SendEndpoint**
+
+Endpoint to link against a swarm topic
+
+### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+
+### Properties
+
+-   `topic` **[Topic](#topic)** 
 
 # install
 
