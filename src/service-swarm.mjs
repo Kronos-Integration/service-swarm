@@ -38,12 +38,14 @@ export class ServiceSwarm extends Service {
   createTopic(name, options) {
     if (!this.topics) {
       this.topics = new Map(); // TODO why ?
+      this.topicsByName = new Map(); // TODO why ?
     }
 
-    let topic = this.topics.get(name);
+    let topic = this.topicsByName.get(name);
     if (!topic) {
-      topic = new Topic(this, name);
-      this.topics.set(name, topic, options);
+      topic = new Topic(this, name, options);
+      this.topicsByName.set(name, topic);
+      this.topics.set(topic.key, topic, options);
     }
 
     return topic;
@@ -70,7 +72,13 @@ export class ServiceSwarm extends Service {
 
     for (const topic of this.topics.values()) {
       this.info(`join ${topic.name} ${JSON.stringify(topic.options)}`);
-      this.swarm.join(topic.key, topic.options);
+
+      await new Promise(resolve => {
+        this.swarm.join(topic.key, topic.options, () => {
+          this.info(`joined ${topic.name}`);
+          resolve();
+        });
+      });
     }
 
     swarm.on("disconnection", (socket, details) => {
@@ -78,20 +86,46 @@ export class ServiceSwarm extends Service {
     });
 
     swarm.on("peer", peer => {
-      console.log("peer", peer);
+      const topic = this.topics.get(peer.topic);
+      topic.addPeer(peer);
+    });
+
+    swarm.on("peer-rejected", peer => {
+      this.info(`peer-rejected: ${JSON.stringify(peer)}`);
+    });
+
+    swarm.on("updated", key => {
+      this.info(`updated: ${key}`);
     });
 
     swarm.on("connection", (socket, details) => {
-      console.log("connection", details);
+      if (details.peer) {
+        const topic = this.topics.get(details.peer.topic);
+
+        console.log(`connection for topic ${topic.name}`);
+
+        socket.write("hello world");
+        topic.socket = socket;
+      } else {
+        // console.log("connection", details);
+      }
       // you can now use the socket as a stream, eg:
       // process.stdin.pipe(socket).pipe(process.stdout)
     });
+
+    for (const topic of this.topics.values()) {
+      this.info(
+        `status of topic ${topic}: ${JSON.stringify(swarm.status(topic.key))}`
+      );
+    }
   }
 
   async _stop() {
     for (const topic of this.topics.values()) {
       this.info(`leave ${topic.name}`);
-      this.swarm.leave(topic.key);
+      this.swarm.leave(topic.key, () => {
+        this.info(`leaved ${topic.name}`);
+      });
     }
   }
 }
