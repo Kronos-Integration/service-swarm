@@ -1,7 +1,9 @@
-import { mergeAttributes, createAttributes } from "model-attributes";
-import { Service } from "@kronos-integration/service";
 import hyperswarm from "hyperswarm";
 import { createHash } from "crypto";
+import { mergeAttributes, createAttributes } from "model-attributes";
+import { Service } from "@kronos-integration/service";
+import { Topic } from "./topic.mjs";
+import { TopicEndpoint } from "./topic-endpoint.mjs";
 
 /**
  * swarm detecting sync service
@@ -35,6 +37,33 @@ export class ServiceSwarm extends Service {
     );
   }
 
+  topics = new Map();
+
+  createTopic(name)
+  {
+    let topic = this.topics(name);
+    if(!topic) {
+      topic = new Topic(this,name);
+      this.topics.set(name,topic);
+    }
+ 
+    return topic;
+  }
+  
+  /**
+   * on demand create topic endpoints
+   * @param {string} name
+   * @param {Object|string} definition
+   * @return {Class} RouteSendEndpoint if name starts with 'topic'
+   */
+  endpointFactoryFromConfig(name, definition, ic) {
+    if (name.startsWith("topic") {
+      return TopicEndpoint;
+    }
+
+    return super.endpointFactoryFromConfig(name, definition, ic);
+  }
+  
   async _start() {
     const swarm = hyperswarm({ bootstrap: this.bootstrap });
 
