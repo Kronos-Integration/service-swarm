@@ -70,16 +70,17 @@ export class ServiceSwarm extends Service {
 
     this.swarm = swarm;
 
-    for (const topic of this.topics.values()) {
-      this.info(`join ${topic.name} ${JSON.stringify(topic.options)}`);
-
-      await new Promise(resolve => {
-        this.swarm.join(topic.key, topic.options, () => {
-          this.info(`joined ${topic.name}`);
-          resolve();
+    await Promise.all(
+      [...this.topics.values()].map(topic => {
+        this.info(`join ${topic.name} ${JSON.stringify(topic.options)}`);
+        return new Promise(resolve => {
+          this.swarm.join(topic.key, topic.options, () => {
+            this.info(`joined ${topic.name}`);
+            resolve();
+          });
         });
-      });
-    }
+      })
+    );
 
     swarm.on("peer", peer => {
       const topic = this.topics.get(peer.topic);
@@ -110,29 +111,34 @@ export class ServiceSwarm extends Service {
       if (details.peer) {
         this.info(`disconnection: ${JSON.stringify(details.peer)}`);
         const topic = this.topics.get(details.peer.topic);
-        if(topic) {
+        if (topic) {
           topic.removePeer(details.peer);
-        }
-        else {
+        } else {
           this.info(`disconnection: unknown topic`);
         }
       }
     });
 
-    for (const topic of this.topics.values()) {
+    /*for (const topic of this.topics.values()) {
       this.info(
         `status of topic ${topic}: ${JSON.stringify(swarm.status(topic.key))}`
       );
     }
+    */
   }
 
   async _stop() {
-    for (const topic of this.topics.values()) {
-      this.info(`leave ${topic.name}`);
-      this.swarm.leave(topic.key, () => {
-        this.info(`leaved ${topic.name}`);
-      });
-    }
+    return Promise.all(
+      [...this.topics.values()].map(topic => {
+        this.info(`leave ${topic.name}`);
+        return new Promise(resolve => {
+          this.swarm.join(topic.key, () => {
+            this.info(`leaved ${topic.name}`);
+            resolve();
+          });
+        });
+      })
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-import { SendEndpoint } from "@kronos-integration/endpoint";
+import { ReceiveEndpoint } from "@kronos-integration/endpoint";
 
 const TOPIC_NAME_PREFIX = "topic.";
 
@@ -7,7 +7,7 @@ const TOPIC_NAME_PREFIX = "topic.";
  *
  * @property {Topic} topic
  */
-export class TopicEndpoint extends SendEndpoint {
+export class TopicEndpoint extends ReceiveEndpoint {
   static isTopicName(name) {
     return name.startsWith(TOPIC_NAME_PREFIX);
   }
@@ -38,12 +38,16 @@ export class TopicEndpoint extends SendEndpoint {
     return [...super.jsonAttributes, "topic"];
   }
 
+  get isOut() {
+    return true;
+  }
+  
   get isIn() {
     return true;
   }
 
   get isOpen() {
-    return this.topic.socket !== undefined;
+    return this.topic && this.topic.socket !== undefined;
   }
 
   async receive(arg) {
