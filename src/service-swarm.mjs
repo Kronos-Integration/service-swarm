@@ -26,6 +26,9 @@ export class ServiceSwarm extends Service {
         topic: {
           description: "peer lookup topic",
           needsRestart: true,
+          setter(value, attribute) {
+            this.topic = createHash("sha256").update(value).digest();
+          },
           type: "string"
         }
       })
@@ -37,9 +40,7 @@ export class ServiceSwarm extends Service {
 
     this.swarm = swarm;
 
-    const topic = createHash("sha256").update(this.topic).digest();
-
-    swarm.join(topic, {
+    swarm.join(this.topic, {
       lookup: true, // find & connect to peers
       announce: true // optional- announce self as a connection target
     });
@@ -61,8 +62,7 @@ export class ServiceSwarm extends Service {
   }
 
   async _stop() {
-    const topic = createHash("sha256").update(this.topic).digest();
-    this.swarm.leave(topic);
+    this.swarm.leave(this.topic);
   }
 }
 
