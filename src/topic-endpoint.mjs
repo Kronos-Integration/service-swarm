@@ -76,7 +76,7 @@ export class TopicEndpoint extends SendEndpoint {
     let goOn = "closed";
 
     if (this.socket) {
-      goOn = socket.write(arg, "utf8", cb => {
+      goOn = this.socket.write(arg, "utf8", cb => {
         this.owner.info("chunk flushed");
       });
     }
