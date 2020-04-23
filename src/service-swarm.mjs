@@ -72,10 +72,10 @@ export class ServiceSwarm extends Service {
 
     await Promise.all(
       [...this.topics.values()].map(topic => {
-        this.info(`join ${topic.name} ${JSON.stringify(topic.options)}`);
+        this.info(`join topic ${topic.name} ${JSON.stringify(topic.options)}`);
         return new Promise(resolve => {
           this.swarm.join(topic.key, topic.options, () => {
-            this.info(`joined ${topic.name}`);
+            this.info(`joined topic ${topic.name}`);
             resolve();
           });
         });
@@ -140,10 +140,10 @@ export class ServiceSwarm extends Service {
   async _stop() {
     return Promise.all(
       [...this.topics.values()].map(topic => {
-        this.info(`leave ${topic.name}`);
+        this.info(`leave topic ${topic.name}`);
         return new Promise(resolve => {
           this.swarm.join(topic.key, () => {
-            this.info(`leaved ${topic.name}`);
+            this.info(`leaved topic ${topic.name}`);
             resolve();
           });
         });
