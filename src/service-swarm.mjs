@@ -95,15 +95,24 @@ export class ServiceSwarm extends Service {
       this.info(`updated: ${JSON.stringify(key)}`);
     });*/
 
-    swarm.on("connection", (socket, details) => {
+    swarm.on("connection", async (socket, details) => {
       if (details.peer) {
         const topic = this.topics.get(details.peer.topic);
 
-        console.log(`connection for topic ${topic.name}`);
-
-        socket.pipe(process.stdout);
-        //socket.write("hello world");
+        this.trace(`connection for topic ${topic.name}`);
         topic.socket = socket;
+
+        this.trace(`start reading socket`);
+
+        try {
+          for await (const chunk of socket) {
+            this.info(`got ${chunk}`);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+        this.trace(`done reading socket`);
+
       }
       // process.stdin.pipe(socket).pipe(process.stdout)
     });
