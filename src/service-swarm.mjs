@@ -100,10 +100,20 @@ export class ServiceSwarm extends Service {
         const topic = this.topics.get(details.peer.topic);
 
         this.trace(`connection for topic ${topic.name}`);
+        //this.trace(`connection details ${details}`);
+
         topic.socket = socket;
 
-        this.trace(`start reading socket`);
+        //this.trace(`socket readableFlowing: ${socket.readableFlowing}`);
+        //socket.resume();
 
+        //this.trace(`start reading socket`);
+
+        socket.on("data", chunk => this.info(`got ${chunk}`));
+
+        this.trace(`socket readableFlowing: ${socket.readableFlowing}`);
+
+        /*
         try {
           for await (const chunk of socket) {
             this.info(`got ${chunk}`);
@@ -111,8 +121,8 @@ export class ServiceSwarm extends Service {
         } catch (e) {
           console.log(e);
         }
-        this.trace(`done reading socket`);
-
+        */
+        //this.trace(`done reading socket`);
       }
       // process.stdin.pipe(socket).pipe(process.stdout)
     });

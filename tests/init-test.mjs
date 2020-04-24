@@ -7,7 +7,7 @@ import { ServiceSwarm } from "../src/service-swarm.mjs";
 test("start / stop", async t => {
   const sp = new StandaloneServiceProvider();
 
-  const key = "11-3232-334545-fff-ggff6f-gr-df57";
+  const key = "11-3232-334545-fff-ggff6f-gr-df58";
 
   const bootstrap = [`127.0.0.1:61418`];
 
