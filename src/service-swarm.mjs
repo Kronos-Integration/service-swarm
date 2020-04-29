@@ -100,8 +100,8 @@ export class ServiceSwarm extends Service {
         const topic = this.topics.get(details.peer.topic);
 
         this.trace(`connection for topic ${topic.name}`);
-        this.trace(`connection details ${details}`);
-        this.trace(`socket: ${socket.pending} ${socket.connecting} ${socket.address()} ${socket.remoteAddress}`);
+        this.trace(`connection details ${JSON.stringify(details)}`);
+        this.trace(`socket: ${socket.pending} ${socket.connecting} ${JSON.stringify(socket.address())} ${socket.remoteAddress}`);
 
         topic.socket = socket;
 
