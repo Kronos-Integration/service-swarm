@@ -101,7 +101,7 @@ export class ServiceSwarm extends Service {
 
         this.trace(`connection for topic ${topic.name}`);
         this.trace(`connection details ${details}`);
-        this.trace(`socket: ${socket.pending} ${socket.connecting} ${socket.address()} ${socket.remoteAddress()}`);
+        this.trace(`socket: ${socket.pending} ${socket.connecting} ${socket.address()} ${socket.remoteAddress}`);
 
         topic.socket = socket;
 
