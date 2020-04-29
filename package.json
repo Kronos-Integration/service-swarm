@@ -7,7 +7,6 @@
   "sideEffects": false,
   "type": "module",
   "main": "src/service-swarm.mjs",
-  "module": "src/service-swarm.mjs",
   "description": "manage a set of remote services",
   "license": "BSD-2-Clause",
   "scripts": {
