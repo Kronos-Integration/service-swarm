@@ -110,6 +110,8 @@ export class ServiceSwarm extends Service {
 
         //this.trace(`start reading socket`);
 
+        setInterval(() => socket.write(`hello from ${socket.localAddress}`), 2000);
+
         socket.on("data", chunk => this.info(`got ${chunk}`));
 
         this.trace(`socket readableFlowing: ${socket.readableFlowing}`);
