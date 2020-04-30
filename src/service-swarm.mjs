@@ -3,6 +3,7 @@ import { mergeAttributes, createAttributes } from "model-attributes";
 import { Service } from "@kronos-integration/service";
 import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
+import { PeersEndpoint } from "./peers-endpoint.mjs";
 
 /**
  * swarm detecting sync service
@@ -60,6 +61,10 @@ export class ServiceSwarm extends Service {
   endpointFactoryFromConfig(name, definition, ic) {
     if (TopicEndpoint.isTopicName(name)) {
       return TopicEndpoint;
+    }
+    
+    if (PeersEndpoint.isPeersName(name)) {
+      return PeersEndpoint;
     }
 
     return super.endpointFactoryFromConfig(name, definition, ic);
