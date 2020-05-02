@@ -6,9 +6,9 @@
   },
   "sideEffects": false,
   "type": "module",
-  "main": "src/service-swarm.mjs",
+  "main": "./src/service-swarm.mjs",
   "exports": {
-    ".": "src/service-swarm.mjs",
+    ".": "./src/service-swarm.mjs",
     "./": "./"
   },
   "description": "manage a set of remote services",
@@ -16,11 +16,11 @@
   "scripts": {
     "test": "ava --timeout 2m",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
-    "docs": "documentation readme src/service-swarm.mjs --section=API",
-    "lint": "documentation lint src/service-swarm.mjs"
+    "docs": "documentation readme ./src/service-swarm.mjs --section=API",
+    "lint": "documentation lint ./src/service-swarm.mjs"
   },
   "dependencies": {
-    "@kronos-integration/service": "^8.3.25",
+    "@kronos-integration/service": "^8.3.26",
     "hyperswarm": "^2.13.0",
     "model-attributes": "^4.1.6"
   },

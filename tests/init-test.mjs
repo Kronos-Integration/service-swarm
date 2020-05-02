@@ -2,7 +2,7 @@ import test from "ava";
 import { StandaloneServiceProvider } from "@kronos-integration/service";
 import { SendEndpoint, ReceiveEndpoint } from "@kronos-integration/endpoint";
 
-import { ServiceSwarm } from "../src/service-swarm.mjs";
+import { ServiceSwarm } from "@kronos-integration/service-swarm";
 
 test("start / stop", async t => {
   const sp = new StandaloneServiceProvider();
