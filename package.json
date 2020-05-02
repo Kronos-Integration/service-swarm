@@ -8,7 +8,7 @@
   "type": "module",
   "main": "src/service-swarm.mjs",
   "exports": {
-    ".": "./src/service-swarm.mjs",
+    ".": "src/service-swarm.mjs",
     "./": "./"
   },
   "description": "manage a set of remote services",
