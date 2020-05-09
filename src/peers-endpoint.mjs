@@ -1,9 +1,16 @@
 import { SendEndpoint } from "@kronos-integration/endpoint";
 
+/**
+ * Endpoint name prefix for peers endpoints
+ */
 const PEERS_NAME_PREFIX = "peers.";
 
 /**
  * Endpoint to link against a swarm topic
+ * @param {string} name endpoint name
+ * @param {Object} owner owner of the endpoint
+ * @param {Object} options
+ * @param {string} options.topic defaults to endpoint name (without @see PEERS_NAME_PREFIX)
  *
  * @property {Topic} topic
  */
@@ -12,12 +19,6 @@ export class PeersEndpoint extends SendEndpoint {
     return name.startsWith(PEERS_NAME_PREFIX);
   }
 
-  /**
-   * @param {string} name endpoint name
-   * @param {Object} owner owner of the endpoint
-   * @param {Object} options
-   * @param {string} options.topic defaults to endpoint name
-   */
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 

@@ -28,15 +28,21 @@ export class Topic {
       socket: {
         set: value => {
           socket = value;
-          this.endpoints.forEach(e => e.socket = socket);
+          this.endpoints.forEach(e => (e.socket = socket));
+
+          if (socket) {
+            socket.once("error", error => {
+              this.service.error(`socket error ${error}`);
+              this.socket = undefined;
+            });
+          }
         },
         get: () => socket
       }
     });
   }
 
-  addEndpoint(endpoit)
-  {
+  addEndpoint(endpoit) {
     this.endpoints.add(endpoit);
   }
 

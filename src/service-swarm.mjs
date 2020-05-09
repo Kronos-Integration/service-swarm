@@ -62,7 +62,7 @@ export class ServiceSwarm extends Service {
     if (TopicEndpoint.isTopicName(name)) {
       return TopicEndpoint;
     }
-    
+
     if (PeersEndpoint.isPeersName(name)) {
       return PeersEndpoint;
     }
@@ -106,7 +106,11 @@ export class ServiceSwarm extends Service {
 
         this.trace(`connection for topic ${topic.name}`);
         //this.trace(`connection details ${JSON.stringify(details)}`);
-        this.trace(`socket: ${socket.pending} ${socket.connecting} ${JSON.stringify(socket.address())} ${socket.remoteAddress}`);
+        this.trace(
+          `socket: ${socket.pending} ${socket.connecting} ${JSON.stringify(
+            socket.address()
+          )} ${socket.remoteAddress}`
+        );
 
         topic.socket = socket;
 
@@ -115,17 +119,16 @@ export class ServiceSwarm extends Service {
 
         //this.trace(`start reading socket`);
 
-        socket.on('error', error => this.info(`socket error ${error}`));
-        socket.on('close', () => this.info('socket close'));
-        socket.on('drain', () => this.info('socket drain'));
-        socket.on('end', () => this.info('socket end'));
-        socket.on('timeout', () => this.info('socket timeout'));
+        socket.on("close", () => this.info("socket close"));
+        socket.on("drain", () => this.info("socket drain"));
+        socket.on("end", () => this.info("socket end"));
+        socket.on("timeout", () => this.info("socket timeout"));
 
-        setInterval(() => { 
-          socket.write(`hello from ${socket.localAddress}`,() =>
-          {
+        setInterval(() => {
+          socket.write(`hello from ${socket.localAddress}`, () => {
             this.info(`socket written`);
-          }); }, 2000);
+          });
+        }, 2000);
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
 

@@ -28,9 +28,14 @@ Manage a set of remote services
 -   [Topic](#topic)
     -   [Parameters](#parameters-1)
     -   [Properties](#properties)
+-   [TOPIC_NAME_PREFIX](#topic_name_prefix)
 -   [TopicEndpoint](#topicendpoint)
     -   [Parameters](#parameters-2)
     -   [Properties](#properties-1)
+-   [PEERS_NAME_PREFIX](#peers_name_prefix)
+-   [PeersEndpoint](#peersendpoint)
+    -   [Parameters](#parameters-3)
+    -   [Properties](#properties-2)
 
 ## ServiceSwarm
 
@@ -69,6 +74,12 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 -   `key` **[Buffer](https://nodejs.org/api/buffer.html)** 
 
+## TOPIC_NAME_PREFIX
+
+Endpoint name prefix for topic endpoints
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
 ## TopicEndpoint
 
 **Extends SendEndpoint**
@@ -80,6 +91,30 @@ Endpoint to link against a swarm topic
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
 -   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+    -   `options.topic` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
+
+### Properties
+
+-   `topic` **[Topic](#topic)** 
+
+## PEERS_NAME_PREFIX
+
+Endpoint name prefix for peers endpoints
+
+Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+## PeersEndpoint
+
+**Extends SendEndpoint**
+
+Endpoint to link against a swarm topic
+
+### Parameters
+
+-   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+-   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
+-   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+    -   `options.topic` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defaults to endpoint name (without @see PEERS_NAME_PREFIX)
 
 ### Properties
 
