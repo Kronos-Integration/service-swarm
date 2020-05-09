@@ -45,12 +45,17 @@ export class Topic {
     });
   }
 
-  addTopicEndpoint(endpoit) {
-    this.topicEndpoints.add(endpoit);
+  addTopicEndpoint(endpoint) {
+    this.topicEndpoints.add(endpoint);
   }
 
-  addPeersEndpoint(endpoit) {
-    this.peersEndpoints.add(endpoit);
+  addPeersEndpoint(endpoint) {
+    this.peersEndpoints.add(endpoint);
+    endpoint.send(this.peers));
+  }
+
+  notifyPeerEndpoints() {
+    this.peersEndpoints.forEach(e => e.send(this.peers));
   }
 
   addPeer(peer) {
@@ -65,7 +70,7 @@ export class Topic {
       this.service.info(`add peer ${p}`);
       this.peers.add(p);
 
-      this.peersEndpoints.forEach(e => e.send(this.peers));
+      this.notifyPeerEndpoints();
     }
   }
 
@@ -74,7 +79,7 @@ export class Topic {
     if (this.peers.has(p)) {
       this.service.info(`delete peer ${p}`);
       this.peers.delete(p);
-      this.peersEndpoints.forEach(e => e.send(this.peers));
+      this.notifyPeerEndpoints();
     }
   }
 
