@@ -32,7 +32,7 @@ export class PeersEndpoint extends SendEndpoint {
       }
     });
 
-    //this.topic.addEndpoint(this);
+    this.topic.addPeersEndpoint(this);
   }
 
   get toStringAttributes() {

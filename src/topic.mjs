@@ -9,6 +9,8 @@ import { createHash } from "crypto";
  * @property {string} name
  * @property {Object} options
  * @property {Buffer} key
+ * @property {Set<TopicEndppoint>} topicEndpoints
+ * @property {Set<PeerEndpoint>} peerEndpoints
  */
 export class Topic {
   constructor(service, name, options = {}) {
@@ -17,7 +19,8 @@ export class Topic {
     Object.defineProperties(this, {
       service: { value: service },
       peers: { value: new Set() },
-      endpoints: { value: new Set() },
+      topicEndpoints: { value: new Set() },
+      peersEndpoints: { value: new Set() },
       name: { value: name },
       options: { value: { lookup: true, announce: true, ...options } },
       key: {
@@ -28,7 +31,7 @@ export class Topic {
       socket: {
         set: value => {
           socket = value;
-          this.endpoints.forEach(e => (e.socket = socket));
+          this.topicEndpoints.forEach(e => (e.socket = socket));
 
           if (socket) {
             socket.once("error", error => {
@@ -42,8 +45,12 @@ export class Topic {
     });
   }
 
-  addEndpoint(endpoit) {
-    this.endpoints.add(endpoit);
+  addTopicEndpoint(endpoit) {
+    this.topicEndpoints.add(endpoit);
+  }
+
+  addPeersEndpoint(endpoit) {
+    this.peersEndpoints.add(endpoit);
   }
 
   addPeer(peer) {
@@ -57,6 +64,8 @@ export class Topic {
 
       this.service.info(`add peer ${p}`);
       this.peers.add(p);
+
+      this.peersEndpoints.forEach(e => e.send(this.peers));
     }
   }
 
@@ -65,6 +74,7 @@ export class Topic {
     if (this.peers.has(p)) {
       this.service.info(`delete peer ${p}`);
       this.peers.delete(p);
+      this.peersEndpoints.forEach(e => e.send(this.peers));
     }
   }
 

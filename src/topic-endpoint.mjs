@@ -49,7 +49,7 @@ export class TopicEndpoint extends SendEndpoint {
       }
     });
 
-    this.topic.addEndpoint(this);
+    this.topic.addTopicEndpoint(this);
   }
 
   get toStringAttributes() {

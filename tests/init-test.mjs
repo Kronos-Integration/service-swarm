@@ -25,7 +25,11 @@ test("start / stop", async t => {
   };
 
   const s1 = new ReceiveEndpoint("s1", sp, options);
-  const s2 = new ReceiveEndpoint("s2", sp, options);
+  const ps1 = new ReceiveEndpoint("ps1", sp, {
+    receive: peers => {
+      console.log("peers received", peers);
+    }
+  });
 
   const ss1 = await sp.declareService({
     type: ServiceSwarm,
@@ -34,13 +38,23 @@ test("start / stop", async t => {
     endpoints: {
       "topic.t1": {
         connected: s1
+      },
+      "peers.t1": {
+        connected: ps1
       }
     }
   });
 
   t.is(ss1.endpoints["topic.t1"].name, "topic.t1");
   t.is(ss1.endpoints["topic.t1"].topic, ss1.topicsByName.get("t1"));
-  t.true(ss1.topicsByName.get("t1").endpoints.has(ss1.endpoints["topic.t1"]));
+  t.true(
+    ss1.topicsByName.get("t1").topicEndpoints.has(ss1.endpoints["topic.t1"])
+  );
+  t.true(
+    ss1.topicsByName.get("t1").peersEndpoints.has(ss1.endpoints["peers.t1"])
+  );
+
+  const s2 = new ReceiveEndpoint("s2", sp, options);
 
   const ss2 = await sp.declareService({
     type: ServiceSwarm,
