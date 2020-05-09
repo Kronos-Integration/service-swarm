@@ -115,7 +115,17 @@ export class ServiceSwarm extends Service {
 
         //this.trace(`start reading socket`);
 
-        setInterval(() => socket.write(`hello from ${socket.localAddress}`), 2000);
+        socket.on('error', error => this.info(`socket error ${error}`));
+        socket.on('close', () => this.info('socket close'));
+        socket.on('drain', () => this.info('socket drain'));
+        socket.on('end', () => this.info('socket end'));
+        socket.on('timeout', () => this.info('socket timeout'));
+
+        setInterval(() => { 
+          socket.write(`hello from ${socket.localAddress}`,() =>
+          {
+            this.info(`socket written`);
+          }); }, 2000);
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
 
