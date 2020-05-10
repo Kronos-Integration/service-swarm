@@ -36,7 +36,13 @@ export class Topic {
           if (socket) {
             socket.once("error", error => {
               this.service.error(`socket error ${error}`);
-              this.socket = undefined;
+              socket = undefined;
+              this.topicEndpoints.forEach(e => (e.socket = undefined));
+            });
+            socket.once("close", () => {
+              this.service.info('socket close');
+              socket = undefined;
+              this.topicEndpoints.forEach(e => (e.socket = undefined));
             });
           }
         },

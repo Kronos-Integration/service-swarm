@@ -119,7 +119,6 @@ export class ServiceSwarm extends Service {
 
         //this.trace(`start reading socket`);
 
-        socket.on("close", () => this.info("socket close"));
         socket.on("drain", () => this.info("socket drain"));
         socket.on("end", () => this.info("socket end"));
         socket.on("timeout", () => this.info("socket timeout"));
