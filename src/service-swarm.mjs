@@ -127,7 +127,7 @@ export class ServiceSwarm extends Service {
           socket.write(`hello from ${socket.localAddress}`, () => {
             this.info(`socket written`);
           });
-        }, 2000);
+        }, 5000);
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
 
