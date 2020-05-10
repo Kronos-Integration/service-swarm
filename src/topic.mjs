@@ -44,6 +44,11 @@ export class Topic {
               socket = undefined;
               this.topicEndpoints.forEach(e => (e.socket = undefined));
             });
+            socket.once("end", () => {
+              this.service.info('socket end');
+              socket = undefined;
+              this.topicEndpoints.forEach(e => (e.socket = undefined));
+            });
           }
         },
         get: () => socket
