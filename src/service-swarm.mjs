@@ -101,7 +101,7 @@ export class ServiceSwarm extends Service {
     });*/
 
     swarm.on("connection", async (socket, details) => {
-      if (details.peer) {
+      if (details.peer && !details.client) {
         const topic = this.topics.get(details.peer.topic);
 
         this.trace(`connection for topic ${topic.name}`);
