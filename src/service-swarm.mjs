@@ -107,7 +107,7 @@ export class ServiceSwarm extends Service {
         return;
       }
 
-      this.trace(`none client connection`);
+      this.trace(`none client connection ${details}`);
 
       if (details.peer) {
         const topic = this.topics.get(details.peer.topic);
