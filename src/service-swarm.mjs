@@ -30,6 +30,7 @@ export class ServiceSwarm extends Service {
         key: {
           description: "topic initial key",
           needsRestart: true,
+          private: true,
           type: "string"
         }
       })
