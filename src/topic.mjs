@@ -63,11 +63,11 @@ export class Topic {
 
   addPeersEndpoint(endpoint) {
     this.peersEndpoints.add(endpoint);
-    endpoint.sendIfOpen(this.peers);
+    endpoint.send(this.peers);
   }
 
   notifyPeerEndpoints() {
-    this.peersEndpoints.forEach(e => e.sendIfOpen(this.peers));
+    this.peersEndpoints.forEach(e => e.send(this.peers));
   }
 
   addPeer(peer) {

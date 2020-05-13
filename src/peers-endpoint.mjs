@@ -1,4 +1,4 @@
-import { SendEndpoint } from "@kronos-integration/endpoint";
+import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 
 /**
  * Endpoint name prefix for peers endpoints
@@ -14,7 +14,7 @@ const PEERS_NAME_PREFIX = "peers.";
  *
  * @property {Topic} topic
  */
-export class PeersEndpoint extends SendEndpoint {
+export class PeersEndpoint extends MultiSendEndpoint {
   static isPeersName(name) {
     return name.startsWith(PEERS_NAME_PREFIX);
   }

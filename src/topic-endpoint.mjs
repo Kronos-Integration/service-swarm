@@ -1,4 +1,4 @@
-import { SendEndpoint } from "@kronos-integration/endpoint";
+import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 
 /**
  * Endpoint name prefix for topic endpoints
@@ -13,7 +13,7 @@ const TOPIC_NAME_PREFIX = "topic.";
  * @param {string} options.topic defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
  * @property {Topic} topic
  */
-export class TopicEndpoint extends SendEndpoint {
+export class TopicEndpoint extends MultiSendEndpoint {
   static isTopicName(name) {
     return name.startsWith(TOPIC_NAME_PREFIX);
   }
