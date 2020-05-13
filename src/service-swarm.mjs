@@ -27,6 +27,15 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "string"
         },
+        ephemeral: {
+          description: `Set to false if this is a long running instance on a server
+When running in ephemeral mode you don't join the DHT but just 
+query it instead. If unset, or set to a non-boolean (default undefined)
+then the node will start in short-lived (ephemeral) mode and switch 
+to long-lived (non-ephemeral) mode after a certain period of uptime`,
+          needsRestart: true,
+          type: "boolean"
+        },
         key: {
           description: "topic initial key",
           needsRestart: true,
@@ -72,7 +81,7 @@ export class ServiceSwarm extends Service {
   }
 
   async _start() {
-    const swarm = hyperswarm({ bootstrap: this.bootstrap });
+    const swarm = hyperswarm({ bootstrap: this.bootstrap, ephemeral: this.ephemeral, multiplex: true });
 
     this.swarm = swarm;
 
@@ -102,12 +111,12 @@ export class ServiceSwarm extends Service {
     });*/
 
     swarm.on("connection", async (socket, details) => {
-      if(details.client) {
+      if (details.client) {
         this.trace(`ignore client connection`);
         return;
       }
 
-      this.trace('none client connection');
+      this.trace("none client connection");
 
       console.log(details);
 
