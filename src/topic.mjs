@@ -16,9 +16,9 @@ export class Topic {
   constructor(service, name, options = {}) {
     let socket;
 
-    function setSocket(s) {
+    function setSocket(o, s) {
       socket = s;
-      this.topicEndpoints.forEach(e => e.socket = s);
+      o.topicEndpoints.forEach(e => (e.socket = s));
     }
 
     Object.defineProperties(this, {
@@ -35,20 +35,20 @@ export class Topic {
       },
       socket: {
         set: value => {
-          setSocket(value);
+          setSocket(this, value);
 
           if (socket) {
             socket.once("error", error => {
               this.service.error(`socket error ${error}`);
-              setSocket(undefined);
+              setSocket(this, undefined);
             });
             socket.once("close", () => {
-              this.service.info('socket close');
-              setSocket(undefined);
+              this.service.info("socket close");
+              setSocket(this, undefined);
             });
             socket.once("end", () => {
-              this.service.info('socket end');
-              setSocket(undefined);
+              this.service.info("socket end");
+              setSocket(this, undefined);
             });
           }
         },
