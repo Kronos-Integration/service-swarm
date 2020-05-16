@@ -75,11 +75,8 @@ export class TopicEndpoint extends MultiSendEndpoint {
   async receive(arg) {
     let goOn = "closed";
 
-    console.log("receive", arg);
     if (this.socket) {
-      goOn = this.socket.write(arg, "utf8", cb => {
-        this.owner.info("chunk flushed");
-      });
+      goOn = this.socket.write(arg, "utf8");
     }
 
     this.owner.info(`${this}: send(${goOn}) ${arg}`);

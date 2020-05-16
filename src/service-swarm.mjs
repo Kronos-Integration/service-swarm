@@ -82,7 +82,11 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   }
 
   async _start() {
-    const swarm = hyperswarm({ bootstrap: this.bootstrap, ephemeral: this.ephemeral, multiplex: true });
+    const swarm = hyperswarm({
+      bootstrap: this.bootstrap,
+      ephemeral: this.ephemeral,
+      multiplex: true
+    });
 
     this.swarm = swarm;
 
@@ -112,51 +116,25 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     });*/
 
     swarm.on("connection", async (socket, details) => {
-      this.trace(`connection: client=${details.client ? 'true': 'false'} ${socket.constructor.name}`);
+      this.trace(
+        `connection: client=${details.client ? "true" : "false"} ${JSON.stringify(socket.address())} ${socket.remoteAddress}`);
 
       if (details.peer) {
         const topic = this.topics.get(details.peer.topic);
 
         this.trace(`connection for topic ${topic.name}`);
-        //this.trace(`connection details ${JSON.stringify(details)}`);
-        this.trace(
-          `socket: ${socket.pending} ${socket.connecting} ${JSON.stringify(
-            socket.address()
-          )} ${socket.remoteAddress}`
-        );
 
         topic.socket = socket;
-
-        //this.trace(`socket readableFlowing: ${socket.readableFlowing}`);
-        //socket.resume();
-
-        //this.trace(`start reading socket`);
 
         socket.on("drain", () => this.info("socket drain"));
         socket.on("timeout", () => this.info("socket timeout"));
 
         setInterval(() => {
-          socket.write(`hello from ${socket.localAddress} ${hostname()}`, () => {
-            this.info(`socket written`);
-          });
+          socket.write(`hello from ${hostname()}`);
         }, 10000);
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
-
-        //this.trace(`socket readableFlowing: ${socket.readableFlowing}`);
-
-        /*
-        try {
-          for await (const chunk of socket) {
-            this.info(`got ${chunk}`);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-        */
-        //this.trace(`done reading socket`);
-      }
-      else {
+      } else {
         try {
           for await (const chunk of socket) {
             this.info(`got ${chunk}`);
