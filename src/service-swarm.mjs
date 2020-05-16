@@ -4,6 +4,7 @@ import { Service } from "@kronos-integration/service";
 import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
 import { PeersEndpoint } from "./peers-endpoint.mjs";
+import { hostname } from "os";
 
 /**
  * swarm detecting sync service
@@ -135,7 +136,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         socket.on("timeout", () => this.info("socket timeout"));
 
         setInterval(() => {
-          socket.write(`hello from ${socket.localAddress}`, () => {
+          socket.write(`hello from ${socket.localAddress} ${hostname()}`, () => {
             this.info(`socket written`);
           });
         }, 10000);
