@@ -135,6 +135,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
       } else {
+        console.log(details);
         try {
           for await (const chunk of socket) {
             this.info(`got ${chunk}`);
@@ -144,8 +145,6 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         }
         this.trace(`done reading socket`);
       }
-
-      // process.stdin.pipe(socket).pipe(process.stdout)
     });
 
     swarm.on("disconnection", (socket, details) => {
@@ -159,13 +158,6 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         }
       }
     });
-
-    /*for (const topic of this.topics.values()) {
-      this.info(
-        `status of topic ${topic}: ${JSON.stringify(swarm.status(topic.key))}`
-      );
-    }
-    */
   }
 
   async _stop() {
