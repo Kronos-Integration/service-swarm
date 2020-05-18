@@ -72,6 +72,8 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 -   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 -   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
 -   `key` **[Buffer](https://nodejs.org/api/buffer.html)** 
+-   `topicEndpoints` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;TopicEndppoint>** 
+-   `peerEndpoints` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;PeerEndpoint>** 
 
 ## TOPIC_NAME_PREFIX
 
@@ -81,7 +83,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ## TopicEndpoint
 
-**Extends SendEndpoint**
+**Extends MultiSendEndpoint**
 
 Endpoint to link against a swarm topic
 
@@ -104,7 +106,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 ## PeersEndpoint
 
-**Extends SendEndpoint**
+**Extends MultiSendEndpoint**
 
 Endpoint to link against a swarm topic
 
