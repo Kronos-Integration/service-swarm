@@ -12,6 +12,9 @@
     "./": "./"
   },
   "description": "manage a set of remote services",
+  "keywords": [
+    "kronos-service"
+  ],
   "license": "BSD-2-Clause",
   "scripts": {
     "test": "ava --timeout 2m",
@@ -28,7 +31,7 @@
     "ava": "^3.8.2",
     "c8": "^7.1.2",
     "documentation": "^13.0.0",
-    "semantic-release": "^17.0.7"
+    "semantic-release": "^17.0.8"
   },
   "engines": {
     "node": ">=14.3.0"
