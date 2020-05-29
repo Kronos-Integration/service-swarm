@@ -28,6 +28,13 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "string"
         },
+        /*
+        "node-id": {
+          description: "id of our node",
+          needsRestart: true,
+          type: "string"
+        },
+        */
         ephemeral: {
           description: `Set to false if this is a long running instance on a server
 When running in ephemeral mode you don't join the DHT but just 
