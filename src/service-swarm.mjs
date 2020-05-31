@@ -21,7 +21,7 @@ export class ServiceSwarm extends Service {
 
   static get configurationAttributes() {
     return mergeAttributes(
-      Service.configurationAttributes,
+      super.configurationAttributes,
       createAttributes({
         bootstrap: {
           description: "well known peer addresses",
