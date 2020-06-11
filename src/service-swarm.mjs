@@ -71,7 +71,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   }
 
   /**
-   * on demand create topic endpoints
+   * On demand create topic endpoints
    * @param {string} name
    * @param {Object|string} definition
    * @return {Class} TopicEndpoint if name starts with 'topic.'
@@ -138,11 +138,11 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         setInterval(() => {
           socket.write(`hello from ${hostname()}`);
-        }, 10000);
+        }, 60000);
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
       } else {
-        console.log(details);
+        //console.log(details);
         try {
           for await (const chunk of socket) {
             this.info(`got ${chunk}`);
