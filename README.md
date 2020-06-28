@@ -44,7 +44,7 @@ swarm detecting sync service
 
 ### endpointFactoryFromConfig
 
-on demand create topic endpoints
+On demand create topic endpoints
 
 #### Parameters
 
