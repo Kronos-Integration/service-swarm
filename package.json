@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@kronos-integration/service": "^8.5.14",
-    "hyperswarm": "^2.14.0",
+    "hyperswarm": "^2.14.1",
     "model-attributes": "^4.1.6"
   },
   "devDependencies": {
@@ -33,7 +33,7 @@
     "semantic-release": "^17.1.1"
   },
   "engines": {
-    "node": ">=14.3.0"
+    "node": ">=14.5.0"
   },
   "repository": {
     "type": "git",
