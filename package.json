@@ -22,7 +22,7 @@
     "lint": "documentation lint ./src/service-swarm.mjs"
   },
   "dependencies": {
-    "@kronos-integration/service": "^8.5.17",
+    "@kronos-integration/service": "^8.6.0",
     "hyperswarm": "^2.15.0",
     "model-attributes": "^4.1.6"
   },

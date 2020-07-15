@@ -138,7 +138,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         setInterval(() => {
           socket.write(`hello from ${hostname()}`);
-        }, 60000);
+        }, 5 * 60 * 1000);
 
         socket.on("data", chunk => this.info(`got ${chunk}`));
       } else {
