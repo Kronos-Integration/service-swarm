@@ -140,12 +140,11 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
           socket.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
 
-        socket.on("data", chunk => this.info(`got ${chunk}`));
+        socket.on("data", chunk => this.info(`A got ${chunk}`));
       } else {
-        //console.log(details);
         try {
           for await (const chunk of socket) {
-            this.info(`got ${chunk}`);
+            this.info(`B got ${chunk}`);
           }
         } catch (e) {
           console.log(e);
@@ -156,7 +155,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
     swarm.on("disconnection", (socket, details) => {
       if (details.peer) {
-        this.info(`disconnection: ${JSON.stringify(details.peer)}`);
+        this.trace(`disconnection: ${JSON.stringify(details.peer)}`);
         const topic = this.topics.get(details.peer.topic);
         if (topic) {
           topic.removePeer(details.peer);
