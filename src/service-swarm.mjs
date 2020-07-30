@@ -124,12 +124,19 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
     swarm.on("connection", async (socket, details) => {
       this.info(
-        `connection: peer=${details.peer?"true":"false"} client=${details.client ? "true" : "false"} ${JSON.stringify(socket.address())} ${socket.remoteAddress}`);
+        `connection: peer=${details.peer ? "true" : "false"} client=${
+          details.client ? "true" : "false"
+        } ${JSON.stringify(socket.address())} ${socket.remoteAddress}`
+      );
 
       if (details.peer) {
         const topic = this.topics.get(details.peer.topic);
 
-        this.trace(`connection for topic ${topic.name}`);
+        this.info(`connection for topic ${topic.name}`);
+
+        if (topic.socket) {
+          this.info(`there is already a socket`);
+        }
 
         topic.socket = socket;
 
@@ -139,10 +146,8 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         setInterval(() => {
           socket.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
-
-        //socket.on("data", chunk => this.info(`A got ${chunk}`));
       }
- 
+
       try {
         for await (const chunk of socket) {
           this.info(`B got ${chunk}`);
