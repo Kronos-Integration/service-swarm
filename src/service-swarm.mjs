@@ -123,8 +123,8 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     });*/
 
     swarm.on("connection", async (socket, details) => {
-      this.trace(
-        `connection: client=${details.client ? "true" : "false"} ${JSON.stringify(socket.address())} ${socket.remoteAddress}`);
+      this.info(
+        `connection: peer=${details.peer?"true":"false"} client=${details.client ? "true" : "false"} ${JSON.stringify(socket.address())} ${socket.remoteAddress}`);
 
       if (details.peer) {
         const topic = this.topics.get(details.peer.topic);
@@ -140,17 +140,17 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
           socket.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
 
-        socket.on("data", chunk => this.info(`A got ${chunk}`));
-      } else {
-        try {
-          for await (const chunk of socket) {
-            this.info(`B got ${chunk}`);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-        this.trace(`done reading socket`);
+        //socket.on("data", chunk => this.info(`A got ${chunk}`));
       }
+ 
+      try {
+        for await (const chunk of socket) {
+          this.info(`B got ${chunk}`);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+      this.trace(`done reading socket`);
     });
 
     swarm.on("disconnection", (socket, details) => {
