@@ -5,6 +5,7 @@ import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
 import { PeersEndpoint } from "./peers-endpoint.mjs";
 import { hostname } from "os";
+import { Decode, Encode } from "length-prefix-framed-stream";
 
 /**
  * swarm detecting sync service
@@ -143,19 +144,30 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         socket.on("drain", () => this.info("socket drain"));
         socket.on("timeout", () => this.info("socket timeout"));
 
+        const encode = new Encode();
+
+        encode.pipe(socket);
+
         setInterval(() => {
-          socket.write(`hello from ${hostname()}`);
+          encode.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
       }
 
-      try {
+      const decode = new Decode({ objectMode: true, encoding: 'utf8' });
+
+      socket.pipe(decode);
+
+      decode.on('data',(data) => {
+        this.info(`got ${data}`);
+      });
+
+      /*try {
         for await (const chunk of socket) {
           this.info(`B got ${chunk}`);
         }
       } catch (e) {
         console.log(e);
-      }
-      this.trace(`done reading socket`);
+      }*/
     });
 
     swarm.on("disconnection", (socket, details) => {

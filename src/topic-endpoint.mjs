@@ -1,4 +1,5 @@
 import { MultiSendEndpoint } from "@kronos-integration/endpoint";
+import { Encode } from "length-prefix-framed-stream";
 
 /**
  * Endpoint name prefix for topic endpoints
@@ -21,7 +22,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    let socket;
+    let socket, encode;
 
     const topicName = options.topic
       ? options.topic
@@ -31,9 +32,13 @@ export class TopicEndpoint extends MultiSendEndpoint {
       topic: {
         value: owner.createTopic(topicName, options)
       },
+      encode: { get: () => encode },
       socket: {
         set: value => {
           socket = value;
+
+          encode = new Encode();
+          encode.pipe(socket);
 
           for (const other of this.connections()) {
             if (socket) {
@@ -76,7 +81,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
     let goOn = "closed";
 
     if (this.socket) {
-      goOn = this.socket.write(arg, "utf8");
+      goOn = this.encode.write(arg, "utf8");
     }
 
     this.owner.info(`${this}: send(${goOn}) ${arg}`);
