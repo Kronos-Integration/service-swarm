@@ -1,5 +1,5 @@
 import { hostname } from "os";
-import { pipeline} from "socket";
+import { pipeline} from "stream";
 import hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
 import { mergeAttributes, createAttributes } from "model-attributes";
