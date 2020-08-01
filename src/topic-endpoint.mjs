@@ -1,3 +1,4 @@
+import { pipeline } from "stream";
 import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 import { Encode } from "length-prefix-framed-stream";
 
@@ -37,9 +38,20 @@ export class TopicEndpoint extends MultiSendEndpoint {
         set: value => {
           socket = value;
 
-          encode = new Encode();
-          encode.pipe(socket);
-
+          if(socket) {
+            encode = new Encode();
+            pipeline(encode,socket,(err) => {
+    if (err) {
+      console.error('B Pipeline failed.', err);
+    } else {
+      console.log('B Pipeline succeeded.');
+    }
+  });
+          }
+          else {
+            encode = undefined;
+          }
+          
           for (const other of this.connections()) {
             if (socket) {
               owner.trace(`${this} open ${other}`);
