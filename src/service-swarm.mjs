@@ -149,6 +149,8 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         await pipeline(encode, socket);
 
+        this.info(`Encoding pipeline established ${topic.name}`);
+
         setInterval(() => {
           encode.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
@@ -157,6 +159,8 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       const decode = new Decode({ objectMode: true, encoding: "utf8" });
 
       await pipeline(socket, decode);
+
+      this.info(`Decoding pipeline established ${topic.name}`);
 
       decode.on("data", data => {
         this.info(`got ${data}`);
