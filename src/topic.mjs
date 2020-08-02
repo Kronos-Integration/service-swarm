@@ -42,12 +42,11 @@ export class Topic {
               this.service.error(`socket error ${error}`);
               setSocket(this, undefined);
             });
-            socket.once("close", () => {
-              this.service.info("socket close");
+            socket.once("end", () => {
               setSocket(this, undefined);
             });
-            socket.once("end", () => {
-              this.service.info("socket end");
+            socket.once("close", () => {
+              this.service.info("socket close");
               setSocket(this, undefined);
             });
           }
