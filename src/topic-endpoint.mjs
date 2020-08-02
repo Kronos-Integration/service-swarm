@@ -1,6 +1,6 @@
-import { pipeline } from "stream";
 import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 import { Encode } from "length-prefix-framed-stream";
+import { pipeline  } from "./util.mjs";
 
 /**
  * Endpoint name prefix for topic endpoints
@@ -35,23 +35,17 @@ export class TopicEndpoint extends MultiSendEndpoint {
       },
       encode: { get: () => encode },
       socket: {
-        set: value => {
+        set: async (value) => {
+
           socket = value;
 
-          if(socket) {
+          if (socket) {
             encode = new Encode();
-            pipeline(encode,socket,(err) => {
-    if (err) {
-      console.error('B Pipeline failed.', err);
-    } else {
-      console.log('B Pipeline succeeded.');
-    }
-  });
-          }
-          else {
+            await pipeline(encode, socket);
+          } else {
             encode = undefined;
           }
-          
+
           for (const other of this.connections()) {
             if (socket) {
               owner.trace(`${this} open ${other}`);
