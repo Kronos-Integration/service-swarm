@@ -160,7 +160,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
       await pipeline(socket, decode);
 
-      this.info(`Decoding pipeline established ${topic.name}`);
+      this.info(`Decoding pipeline established`);
 
       decode.on("data", data => {
         this.info(`got ${data}`);
