@@ -136,11 +136,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         this.info(`connection for topic ${topic.name}`);
 
-        if (topic.socket) {
-          this.info(`there is already a socket ${topic.socket.remoteAddress} ${topic.socket.remotePort} ${topic.socket.bytesRead} ${topic.socket.bytesWritten}`);
-        }
-
-        topic.socket = socket;
+        topic.addSocket(socket);
 
         socket.on("drain", () => this.info("socket drain"));
         socket.on("timeout", () => this.info("socket timeout"));

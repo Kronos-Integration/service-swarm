@@ -14,16 +14,10 @@ import { createHash } from "crypto";
  */
 export class Topic {
   constructor(service, name, options = {}) {
-    let socket;
-
-    function setSocket(o, s) {
-      socket = s;
-      o.topicEndpoints.forEach(e => (e.socket = s));
-    }
-
     Object.defineProperties(this, {
       service: { value: service },
       peers: { value: new Set() },
+      sockets: { value: new Set() },
       topicEndpoints: { value: new Set() },
       peersEndpoints: { value: new Set() },
       name: { value: name },
@@ -32,27 +26,25 @@ export class Topic {
         value: createHash("sha256")
           .update(service.key + name)
           .digest()
-      },
-      socket: {
-        set: value => {
-          setSocket(this, value);
-
-          if (socket) {
-            socket.once("error", error => {
-              this.service.error(`socket error ${error}`);
-              setSocket(this, undefined);
-            });
-            socket.once("end", () => {
-              setSocket(this, undefined);
-            });
-            socket.once("close", () => {
-              this.service.info("socket close");
-              setSocket(this, undefined);
-            });
-          }
-        },
-        get: () => socket
       }
+    });
+  }
+
+  addSocket(socket) {
+    this.topicEndpoints.forEach(e => e.addSocket(socket));
+
+    socket.once("error", error => {
+      this.service.error(`socket error ${error}`);
+      this.sockets.remove(socket);
+    });
+
+    socket.once("end", () => {
+      this.sockets.remove(socket);
+    });
+
+    socket.once("close", () => {
+      this.service.info("socket close");
+      this.sockets.remove(socket);
     });
   }
 

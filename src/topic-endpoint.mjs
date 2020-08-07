@@ -1,6 +1,6 @@
 import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 import { Encode } from "length-prefix-framed-stream";
-import { pipeline  } from "./util.mjs";
+import { pipeline } from "./util.mjs";
 
 /**
  * Endpoint name prefix for topic endpoints
@@ -23,8 +23,6 @@ export class TopicEndpoint extends MultiSendEndpoint {
   constructor(name, owner, options = {}) {
     super(name, owner, options);
 
-    let socket, encode;
-
     const topicName = options.topic
       ? options.topic
       : name.replace(TOPIC_NAME_PREFIX, "");
@@ -33,34 +31,20 @@ export class TopicEndpoint extends MultiSendEndpoint {
       topic: {
         value: owner.createTopic(topicName, options)
       },
-      encode: { get: () => encode },
-      socket: {
-        set: async (value) => {
-
-          socket = value;
-
-          if (socket) {
-            encode = new Encode();
-            await pipeline(encode, socket);
-          } else {
-            encode = undefined;
-          }
-
-          for (const other of this.connections()) {
-            if (socket) {
-              owner.trace(`${this} open ${other}`);
-              this.openConnection(other);
-            } else {
-              owner.trace(`${this} close ${other}`);
-              this.closeConnection(other);
-            }
-          }
-        },
-        get: () => socket
-      }
+      sockets: { value: new Set() },
+      encode: { value: new Encode() }
     });
 
     this.topic.addTopicEndpoint(this);
+  }
+
+  async addSocket(socket) {
+    await pipeline(this.encode, socket);
+
+    for (const other of this.connections()) {
+      owner.trace(`${this} open ${other}`);
+      this.openConnection(other);
+    }
   }
 
   get toStringAttributes() {
@@ -76,13 +60,13 @@ export class TopicEndpoint extends MultiSendEndpoint {
   }
 
   get isOpen() {
-    return this.socket !== undefined;
+    return this.sockets.size > 0;
   }
 
   async receive(arg) {
     let goOn = "closed";
 
-    if (this.socket) {
+    if (this.sockets.size > 0) {
       goOn = this.encode.write(arg, "utf8");
     }
 
