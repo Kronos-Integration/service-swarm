@@ -147,13 +147,13 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         const encode = new Encode();
 
-        await pipeline(encode, socket);
-
-        this.info(`Encoding pipeline established ${topic.name}`);
-
         setInterval(() => {
           encode.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
+
+        await pipeline(encode, socket);
+
+        this.info(`Encoding pipeline established ${topic.name}`);
       }
 
       const decode = new Decode({ objectMode: true, encoding: "utf8" });

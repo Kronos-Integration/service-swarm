@@ -71,10 +71,6 @@ export class TopicEndpoint extends MultiSendEndpoint {
     return [...super.jsonAttributes, "topic"];
   }
 
-  /* get isOut() {
-    return true;
-  }*/
-
   get isIn() {
     return true;
   }
