@@ -39,6 +39,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
   }
 
   async addSocket(socket) {
+    this.sockets.add(socket);
     await pipeline(this.encode, socket);
 
     for (const other of this.connections()) {

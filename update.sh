@@ -1,8 +1,10 @@
 
 
 
-SERVERS="odroid1 odroid2 pine1 rpi1 xhyve2.private"
-SERVERS="odroid1 pine1"
+SERVERS="odroid0 odroid1 odroid2 odroid3 odroid4 odroid5 pine1 rpi1 xhyve2.private"
+SERVERS="odroid0 odroid1 odroid2 odroid3 odroid4 odroid5 pine1 rpi1"
+SERVERS="odroid odroid1  odroid2 pine1"
+SERVERS="odroid1  pine1"
 
 
 for server in $SERVERS

@@ -31,6 +31,7 @@ export class Topic {
   }
 
   addSocket(socket) {
+    this.sockets.add(socket);
     this.topicEndpoints.forEach(e => e.addSocket(socket));
 
     socket.once("error", error => {
