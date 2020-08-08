@@ -35,16 +35,16 @@ export class Topic {
 
     socket.once("error", error => {
       this.service.error(`socket error ${error}`);
-      this.sockets.remove(socket);
+      this.sockets.delete(socket);
     });
 
     socket.once("end", () => {
-      this.sockets.remove(socket);
+      this.sockets.delete(socket);
     });
 
     socket.once("close", () => {
       this.service.info("socket close");
-      this.sockets.remove(socket);
+      this.sockets.delete(socket);
     });
   }
 
