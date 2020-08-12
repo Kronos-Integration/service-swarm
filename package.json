@@ -22,7 +22,7 @@
     "lint": "documentation lint ./src/service-swarm.mjs"
   },
   "dependencies": {
-    "@kronos-integration/service": "^9.2.2",
+    "@kronos-integration/service": "^9.2.5",
     "hyperswarm": "^2.15.0",
     "length-prefix-framed-stream": "^1.0.0",
     "model-attributes": "^4.1.6"
@@ -34,7 +34,7 @@
     "semantic-release": "^17.1.1"
   },
   "engines": {
-    "node": ">=14.7.0"
+    "node": ">=14.8.0"
   },
   "repository": {
     "type": "git",
