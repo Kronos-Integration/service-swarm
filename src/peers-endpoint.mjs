@@ -39,8 +39,10 @@ export class PeersEndpoint extends MultiSendEndpoint {
     return { ...super.toStringAttributes, topic: "topic" };
   }
 
-  get jsonAttributes() {
-    return [...super.jsonAttributes, "topic"];
+  toJSONWithOptions(options) {
+    const json = super.toJSONWithOptions(options);
+    json.topic = this.topic.toJSONWithOptions(options);
+    return json;
   }
 
   get isOpen() {

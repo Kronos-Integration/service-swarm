@@ -57,7 +57,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
   toJSONWithOptions(options) {
     const json = super.toJSONWithOptions(options);
     json.sockets = this.sockets.size;
-    json.topic = { name: this.topic.name };
+    json.topic = this.topic.toJSONWithOptions(options);
     return json;
   }
 

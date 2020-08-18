@@ -88,6 +88,15 @@ export class Topic {
   }
 
   toString() {
-    return `${this.name}(${this.socket ? "open" : "closed"})`;
+    return `${this.name}(${this.sockets.size ? "open" : "closed"})`;
+  }
+
+  toJSONWithOptions(options) {
+    return {
+      name: this.name,
+      peers: [...this.peers],
+      sockets: this.sockets.size,
+      ...this.options
+    };
   }
 }
