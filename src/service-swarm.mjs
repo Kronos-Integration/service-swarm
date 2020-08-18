@@ -134,7 +134,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       if (details.peer) {
         const topic = this.topics.get(details.peer.topic);
 
-        this.info(`connection for topic ${topic.name}`);
+        this.info(`Connection for topic ${topic.name}`);
 
         topic.addSocket(socket);
 
@@ -161,14 +161,6 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       decode.on("data", data => {
         this.info(`got ${data}`);
       });
-
-      /*try {
-        for await (const chunk of socket) {
-          this.info(`B got ${chunk}`);
-        }
-      } catch (e) {
-        console.log(e);
-      }*/
     });
 
     swarm.on("disconnection", (socket, details) => {

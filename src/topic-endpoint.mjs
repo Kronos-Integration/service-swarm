@@ -9,7 +9,7 @@ const TOPIC_NAME_PREFIX = "topic.";
 
 /**
  * Endpoint to link against a swarm topic
- * @param {string} name endpoint name
+ * @param {string} name endpoint name
  * @param {Object} owner owner of the endpoint
  * @param {Object} options
  * @param {string} options.topic defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
