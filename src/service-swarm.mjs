@@ -1,9 +1,9 @@
 import { hostname } from "os";
+import { pipeline } from "stream";
 import hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
 import { mergeAttributes, createAttributes } from "model-attributes";
 import { Service } from "@kronos-integration/service";
-import { pipeline  } from "./util.mjs";
 import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
 import { PeersEndpoint } from "./peers-endpoint.mjs";
@@ -147,14 +147,18 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
           encode.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);
 
-        await pipeline(encode, socket);
+        pipeline(encode, socket, e => {
+          this.info(`Encoding pipeline end ${e}`);
+        });
 
         this.info(`Encoding pipeline established ${topic.name}`);
       }
 
       const decode = new Decode({ objectMode: true, encoding: "utf8" });
 
-      await pipeline(socket, decode);
+      pipeline(socket, decode, e => {
+        this.info(`Decoding pipeline end ${e}`);
+      });
 
       this.info(`Decoding pipeline established`);
 
