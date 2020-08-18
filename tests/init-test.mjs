@@ -76,7 +76,7 @@ test("start / stop", async t => {
   t.true(ss1.endpoints["topic.t1"].isConnected(s1));
   t.true(ss2.endpoints["topic.t1"].isConnected(s2));
 
-  //t.truthy(ss1.endpoints["topic.t1"].socket);
+  //t.truthy(ss1.endpoints["topic.t1"].sockets.length > 0);
 
   ss1.endpoints["topic.t1"].send("hello from ss1.topic.t1");
 
