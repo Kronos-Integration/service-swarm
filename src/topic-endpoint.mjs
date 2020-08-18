@@ -40,7 +40,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
 
   async addSocket(socket) {
     this.sockets.add(socket);
-    pipeline(this.encode, socket, (e) => {
+    pipeline(this.encode, socket, e => {
       this.owner.trace(`${this} pipleine end ${e}`);
     });
 
@@ -54,8 +54,11 @@ export class TopicEndpoint extends MultiSendEndpoint {
     return { ...super.toStringAttributes, topic: "topic" };
   }
 
-  get jsonAttributes() {
-    return [...super.jsonAttributes, "topic"];
+  toJSONWithOptions(options) {
+    const json = super.toJSONWithOptions(options);
+    json.sockets = this.sockets.size;
+    json.topic = { name: this.topic.name };
+    return json;
   }
 
   get isIn() {
