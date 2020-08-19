@@ -79,7 +79,7 @@ referrer: {
     const key = peer.host + ":" + peer.port;
 
     if (!this.peers.has(key)) {
-      this.service.info(`add peer ${peer}`);
+      this.service.info(`add peer ${key}`);
       this.peers.set(key, peer);
       this.notifyPeerEndpoints();
     }
@@ -89,7 +89,7 @@ referrer: {
     const key = peer.host + ":" + peer.port;
 
     if (this.peers.has(key)) {
-      this.service.info(`delete peer ${peer}`);
+      this.service.info(`delete peer ${key}`);
       this.peers.delete(key);
       this.notifyPeerEndpoints();
     }
