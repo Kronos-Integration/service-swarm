@@ -63,27 +63,19 @@ export class Topic {
   }
 
   addPeer(peer) {
-    console.log("ADD PEER",peer);
-    const p = JSON.stringify(peer.to);
+    console.log("ADD PEER", peer);
 
-    if (!this.peers.has(p)) {
-      if (!peer.to) {
-        //console.log("missing to ?",peer);
-        return;
-      }
-
-      this.service.info(`add peer ${p}`);
-      this.peers.add(p);
-
+    if (!this.peers.has(peer)) {
+      this.service.info(`add peer ${peer}`);
+      this.peers.add(peer);
       this.notifyPeerEndpoints();
     }
   }
 
   removePeer(peer) {
-    const p = JSON.stringify(peer.to);
-    if (this.peers.has(p)) {
-      this.service.info(`delete peer ${p}`);
-      this.peers.delete(p);
+    if (this.peers.has(peer)) {
+      this.service.info(`delete peer ${peer}`);
+      this.peers.delete(peer);
       this.notifyPeerEndpoints();
     }
   }
