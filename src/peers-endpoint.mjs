@@ -35,6 +35,18 @@ export class PeersEndpoint extends MultiSendEndpoint {
     this.topic.addPeersEndpoint(this);
   }
 
+  didConnect(endpoint, other) {
+    console.log("PEER ENDPOINT DID CONNECT",other);
+    if (other.direction === "inout") {
+      endpoint.send([...this.topic.peers.values()]);
+      return () => {};
+    }
+  }
+
+  get isOpen() {
+    return this.socket !== undefined;
+  }
+
   get toStringAttributes() {
     return { ...super.toStringAttributes, topic: "topic" };
   }
@@ -43,9 +55,5 @@ export class PeersEndpoint extends MultiSendEndpoint {
     const json = super.toJSONWithOptions(options);
     json.topic = this.topic.toJSONWithOptions(options);
     return json;
-  }
-
-  get isOpen() {
-    return this.socket !== undefined;
   }
 }
