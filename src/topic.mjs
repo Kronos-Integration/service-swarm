@@ -63,6 +63,13 @@ export class Topic {
   }
 
   addPeer(peer) {
+    /*
+port: 45505,
+host: '10.0.6.2',
+local: true,
+referrer: null,
+topic: <Buffer 4f 3c be 3c 08 17 01 88 f3 ed 15 99 83 72 32 0d e9 63 7f cc 97 d4 56 ad 13 1a 2a 94 93 8c cb 25>
+     */
     console.log("ADD PEER", peer);
 
     if (!this.peers.has(peer)) {
