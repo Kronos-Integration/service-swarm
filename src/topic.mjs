@@ -63,6 +63,7 @@ export class Topic {
   }
 
   addPeer(peer) {
+    console.log("ADD PEER",peer);
     const p = JSON.stringify(peer.to);
 
     if (!this.peers.has(p)) {
@@ -96,7 +97,8 @@ export class Topic {
       name: this.name,
       peers: [...this.peers],
       sockets: this.sockets.size,
-      ...this.options
+      announce: this.options.announce,
+      lookup: this.options.lookup
     };
   }
 }
