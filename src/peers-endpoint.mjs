@@ -36,10 +36,8 @@ export class PeersEndpoint extends MultiSendEndpoint {
   }
 
   didConnect(endpoint, other) {
-    console.log("PEER ENDPOINT DID CONNECT",other);
     if (other.direction === "inout") {
       endpoint.send([...this.topic.peers.values()]);
-      return () => {};
     }
   }
 
