@@ -63,14 +63,18 @@ export class Topic {
   }
 
   addPeer(peer) {
-    /*
-port: 45505,
-host: '10.0.6.2',
-local: true,
-referrer: null,
+/*
+port: 45505
+host: '10.0.6.2'
+local: true
 topic: <Buffer 4f 3c be 3c 08 17 01 88 f3 ed 15 99 83 72 32 0d e9 63 7f cc 97 d4 56 ad 13 1a 2a 94 93 8c cb 25>
-     */
-    console.log("ADD PEER", peer);
+to: { host: '79.194.42.188', port: 52787 }
+referrer: {
+  id: <Buffer ae df b3 1b dd 40 55 81 75 09 31 92 6d b9 aa dd 22 eb 7e 97 58 f2 f2 62 e6 28 8d 8c 03 67 a0 a5>
+  port: 49453,
+  host: '49.177.250.174'
+  }
+*/
 
     const key = peer.host + ":" + peer.port;
 
@@ -98,7 +102,9 @@ topic: <Buffer 4f 3c be 3c 08 17 01 88 f3 ed 15 99 83 72 32 0d e9 63 7f cc 97 d4
   toJSONWithOptions(options) {
     return {
       name: this.name,
-      peers: [...this.peers.keys()],
+      peers: [...this.peers.values()].map(p => {
+        return { host: p.host, port: p.port };
+      }),
       sockets: this.sockets.size,
       announce: this.options.announce,
       lookup: this.options.lookup
