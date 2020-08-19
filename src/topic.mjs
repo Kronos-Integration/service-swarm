@@ -16,7 +16,7 @@ export class Topic {
   constructor(service, name, options = {}) {
     Object.defineProperties(this, {
       service: { value: service },
-      peers: { value: new Set() },
+      peers: { value: new Map() },
       sockets: { value: new Set() },
       topicEndpoints: { value: new Set() },
       peersEndpoints: { value: new Set() },
@@ -59,7 +59,7 @@ export class Topic {
   }
 
   notifyPeerEndpoints() {
-    this.peersEndpoints.forEach(e => e.send(this.peers));
+    this.peersEndpoints.forEach(e => e.send([...this.peers.values()]));
   }
 
   addPeer(peer) {
@@ -72,17 +72,21 @@ topic: <Buffer 4f 3c be 3c 08 17 01 88 f3 ed 15 99 83 72 32 0d e9 63 7f cc 97 d4
      */
     console.log("ADD PEER", peer);
 
-    if (!this.peers.has(peer)) {
+    const key = peer.host + ":" + peer.port;
+
+    if (!this.peers.has(key)) {
       this.service.info(`add peer ${peer}`);
-      this.peers.add(peer);
+      this.peers.set(key, peer);
       this.notifyPeerEndpoints();
     }
   }
 
   removePeer(peer) {
-    if (this.peers.has(peer)) {
+    const key = peer.host + ":" + peer.port;
+
+    if (this.peers.has(key)) {
       this.service.info(`delete peer ${peer}`);
-      this.peers.delete(peer);
+      this.peers.delete(key);
       this.notifyPeerEndpoints();
     }
   }
@@ -94,7 +98,7 @@ topic: <Buffer 4f 3c be 3c 08 17 01 88 f3 ed 15 99 83 72 32 0d e9 63 7f cc 97 d4
   toJSONWithOptions(options) {
     return {
       name: this.name,
-      peers: [...this.peers],
+      peers: [...this.peers.keys()],
       sockets: this.sockets.size,
       announce: this.options.announce,
       lookup: this.options.lookup
