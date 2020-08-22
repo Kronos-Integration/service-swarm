@@ -73,6 +73,8 @@ export class TopicEndpoint extends MultiSendEndpoint {
     const interceptors = this.receivingInterceptors;
     let c = 0;
 
+    console.log("RECEIVE",interceptors,arg);
+
     const next = async arg => {
       if (c >= interceptors.length) {
         this.encode.write(arg);
