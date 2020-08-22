@@ -70,10 +70,17 @@ export class TopicEndpoint extends MultiSendEndpoint {
   }
 
   async receive(arg) {
-    if (this.sockets.size > 0) {
-      this.encode.write(arg);
-    }
+    const interceptors = this.receivingInterceptors;
+    let c = 0;
 
-    this.owner.info(`${this}: send(${arg})`);
+    const next = async arg => {
+      if (c >= interceptors.length) {
+        this.encode.write(arg);
+      } else {
+        return interceptors[c++].receive(this, next, arg);
+      }
+    };
+
+    return next(arg);
   }
 }
