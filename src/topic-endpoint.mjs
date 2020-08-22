@@ -41,7 +41,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
   async addSocket(socket) {
     this.sockets.add(socket);
     pipeline(this.encode, socket, e => {
-      this.owner.trace(`${this} pipleine end ${e}`);
+      this.owner.trace(`${this} pipeline end ${e}`);
     });
 
     for (const other of this.connections()) {
@@ -70,12 +70,10 @@ export class TopicEndpoint extends MultiSendEndpoint {
   }
 
   async receive(arg) {
-    let goOn = "closed";
-
     if (this.sockets.size > 0) {
-      goOn = this.encode.write(arg, "utf8");
+      this.encode.write(arg);
     }
 
-    this.owner.info(`${this}: send(${goOn}) ${arg}`);
+    this.owner.info(`${this}: send(${arg})`);
   }
 }
