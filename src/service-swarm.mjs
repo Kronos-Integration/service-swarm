@@ -103,7 +103,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       maxPeers: this.maxPeers,
       multiplex: true,
       validatePeer: (peer) => {
-        this.info(`validatePeer ${peer}`);
+        this.info(`validatePeer ${JSON.stringify(peer)}`);
         return true;
       }
     });
