@@ -101,7 +101,11 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       bootstrap: this.bootstrap,
       ephemeral: this.ephemeral,
       maxPeers: this.maxPeers,
-      multiplex: true
+      multiplex: true,
+      validatePeer: (peer) => {
+        this.info(`validatePeer ${peer}`);
+        return true;
+      }
     });
 
     this.swarm = swarm;
