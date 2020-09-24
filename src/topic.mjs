@@ -103,7 +103,7 @@ referrer: {
     return {
       name: this.name,
       peers: [...this.peers.values()].map(p => {
-        return { host: p.host, port: p.port };
+        return { host: p.host, port: p.port, local: p.local };
       }),
       sockets: this.sockets.size,
       announce: this.options.announce,
