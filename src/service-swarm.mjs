@@ -30,6 +30,12 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "string"
         },
+        maxPeers: {
+          description: "total amount of peers that this peer will connect to",
+          default: 10,
+          needsRestart: true,
+          type: "integer"
+        },
         /*
         "node-id": {
           description: "id of our node",
@@ -94,6 +100,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     const swarm = hyperswarm({
       bootstrap: this.bootstrap,
       ephemeral: this.ephemeral,
+      maxPeers: this.maxPeers,
       multiplex: true
     });
 
