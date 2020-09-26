@@ -36,6 +36,15 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "integer"
         },
+        maxServerSockets: {
+          needsRestart: true,
+          type: "integer"
+        },
+        maxClinetSockets: {
+          needsRestart: true,
+          type: "integer"
+        },
+        
         /*
         "node-id": {
           description: "id of our node",
@@ -101,6 +110,8 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       bootstrap: this.bootstrap,
       ephemeral: this.ephemeral,
       maxPeers: this.maxPeers,
+      maxServerSockets: this.maxServerSockets,
+      maxClientSockets: this.maxClientSockets,
       multiplex: true,
       validatePeer: (peer) => {
         this.info(`validatePeer ${JSON.stringify(peer)}`);
