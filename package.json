@@ -20,7 +20,8 @@
     "test:ava": "ava --timeout 2m tests/*.mjs",
     "cover": "c8 -x 'tests/**/*' --temp-directory build/tmp ava --timeout 2m && c8 report -r lcov -o build/coverage --temp-directory build/tmp",
     "docs": "documentation readme ./src/service-swarm.mjs --section=API",
-    "lint": "documentation lint ./src/service-swarm.mjs"
+    "lint": "npm run lint:docs",
+    "lint:docs": "documentation lint ./src/service-swarm.mjs"
   },
   "dependencies": {
     "@kronos-integration/service": "^9.2.13",
