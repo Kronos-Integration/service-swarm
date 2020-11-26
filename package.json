@@ -14,6 +14,12 @@
   "keywords": [
     "kronos-service"
   ],
+  "contributors": [
+    {
+      "name": "Markus Felten",
+      "email": "markus.felten@gmx.de"
+    }
+  ],
   "license": "BSD-2-Clause",
   "scripts": {
     "test": "npm run test:ava",
