@@ -1,12 +1,12 @@
 import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 
 /**
- * Endpoint name prefix for peers endpoints
+ * Endpoint name prefix for peers endpoints.
  */
 const PEERS_NAME_PREFIX = "peers.";
 
 /**
- * Endpoint to link against a swarm topic
+ * Endpoint to link against a swarm topic.
  * @param {string} name endpoint name
  * @param {Object} owner owner of the endpoint
  * @param {Object} options

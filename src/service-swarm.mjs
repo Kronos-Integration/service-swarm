@@ -9,7 +9,7 @@ import { TopicEndpoint } from "./topic-endpoint.mjs";
 import { PeersEndpoint } from "./peers-endpoint.mjs";
 
 /**
- * swarm detecting sync service
+ * Swarm detecting sync service.
  */
 export class ServiceSwarm extends Service {
   //topics = new Map();

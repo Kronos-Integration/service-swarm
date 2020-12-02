@@ -3,12 +3,12 @@ import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 import { Encode } from "length-prefix-framed-stream";
 
 /**
- * Endpoint name prefix for topic endpoints
+ * Endpoint name prefix for topic endpoints.
  */
 const TOPIC_NAME_PREFIX = "topic.";
 
 /**
- * Endpoint to link against a swarm topic
+ * Endpoint to link against a swarm topic.
  * @param {string} name endpoint name
  * @param {Object} owner owner of the endpoint
  * @param {Object} options
