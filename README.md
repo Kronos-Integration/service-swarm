@@ -35,7 +35,7 @@ Manage a set of remote services
 
 **Extends Service**
 
-swarm detecting sync service
+Swarm detecting sync service.
 
 ### endpointFactoryFromConfig
 
@@ -72,7 +72,7 @@ Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/G
 
 ## TOPIC_NAME_PREFIX
 
-Endpoint name prefix for topic endpoints
+Endpoint name prefix for topic endpoints.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -80,7 +80,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Extends MultiSendEndpoint**
 
-Endpoint to link against a swarm topic
+Endpoint to link against a swarm topic.
 
 ### Parameters
 
@@ -95,7 +95,7 @@ Endpoint to link against a swarm topic
 
 ## PEERS_NAME_PREFIX
 
-Endpoint name prefix for peers endpoints
+Endpoint name prefix for peers endpoints.
 
 Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)
 
@@ -103,7 +103,7 @@ Type: [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Globa
 
 **Extends MultiSendEndpoint**
 
-Endpoint to link against a swarm topic
+Endpoint to link against a swarm topic.
 
 ### Parameters
 
