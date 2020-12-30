@@ -88,7 +88,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   }
 
   /**
-   * On demand create topic endpoints
+   * On demand create topic endpoints.
    * @param {string} name
    * @param {Object|string} definition
    * @return {Class} TopicEndpoint if name starts with 'topic.'
