@@ -113,10 +113,10 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       maxServerSockets: this.maxServerSockets,
       maxClientSockets: this.maxClientSockets,
       multiplex: true,
-      validatePeer: (peer) => {
+      /*validatePeer: (peer) => {
         this.info(`validatePeer ${JSON.stringify(peer)}`);
         return true;
-      }
+      }*/
     });
 
     this.swarm = swarm;
