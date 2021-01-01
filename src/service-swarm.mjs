@@ -23,7 +23,6 @@ export class ServiceSwarm extends Service {
 
   static get configurationAttributes() {
     return mergeAttributes(
-      super.configurationAttributes,
       createAttributes({
         bootstrap: {
           description: "well known peer addresses",
@@ -67,7 +66,8 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
           private: true,
           type: "string"
         }
-      })
+      }),
+      super.configurationAttributes
     );
   }
 
