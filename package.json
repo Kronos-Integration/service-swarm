@@ -10,7 +10,9 @@
   },
   "description": "manage a set of remote services",
   "keywords": [
-    "kronos-service"
+    "kronos-service",
+    "swarm",
+    "service discovery"
   ],
   "contributors": [
     {
