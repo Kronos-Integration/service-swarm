@@ -11,8 +11,8 @@
   "description": "manage a set of remote services",
   "keywords": [
     "kronos-service",
-    "swarm",
-    "service discovery"
+    "service discovery",
+    "swarm"
   ],
   "contributors": [
     {
@@ -37,7 +37,7 @@
     "model-attributes": "^4.1.8"
   },
   "devDependencies": {
-    "ava": "^3.14.0",
+    "ava": "^3.15.0",
     "c8": "^7.4.0",
     "documentation": "github:arlac77/documentation",
     "semantic-release": "^17.3.1"
