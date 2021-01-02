@@ -1,4 +1,3 @@
-import { hostname } from "os";
 import { pipeline } from "stream";
 import hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
@@ -165,9 +164,10 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
         const encode = new Encode();
 
+        /*
         setInterval(() => {
           encode.write(`hello from ${hostname()}`);
-        }, 5 * 60 * 1000);
+        }, 5 * 60 * 1000);*/
 
         pipeline(encode, socket, e => {
           this.info(`Encoding pipeline end ${e}`);
