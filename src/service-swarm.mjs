@@ -145,15 +145,15 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       this.info(`updated: ${JSON.stringify(key)}`);
     });*/
 
-    swarm.on("connection", async (socket, details) => {
+    swarm.on("connection", async (socket, info) => {
       this.info(
-        `connection: peer=${details.peer ? "true" : "false"} client=${
-          details.client ? "true" : "false"
+        `connection: peer=${info.peer ? "true" : "false"} client=${
+          info.client ? "true" : "false"
         } ${JSON.stringify(socket.address())} ${socket.remoteAddress}`
       );
 
-      if (details.peer) {
-        const topic = this.topics.get(details.peer.topic);
+      if (info.peer) {
+        const topic = this.topics.get(info.peer.topic);
 
         this.info(`Connection for topic ${topic.name}`);
 
@@ -189,12 +189,12 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       });
     });
 
-    swarm.on("disconnection", (socket, details) => {
-      if (details.peer) {
-        this.trace(`disconnection: ${JSON.stringify(details.peer)}`);
-        const topic = this.topics.get(details.peer.topic);
+    swarm.on("disconnection", (socket, info) => {
+      if (info.peer) {
+        this.trace(`disconnection: ${JSON.stringify(info.peer)}`);
+        const topic = this.topics.get(info.peer.topic);
         if (topic) {
-          topic.removePeer(details.peer);
+          topic.removePeer(info.peer);
         } else {
           this.info(`disconnection: unknown topic`);
         }

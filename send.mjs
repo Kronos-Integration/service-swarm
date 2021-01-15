@@ -12,8 +12,8 @@ swarm.join(topic, {
     console.log("joined");
 });
 
-swarm.on("connection", (socket, details) => {
-  console.log("new connection!", details);
+swarm.on("connection", (socket, info) => {
+  console.log("new connection!", info);
 
   // you can now use the socket as a stream, eg:
   process.stdin.pipe(socket).pipe(process.stdout);
