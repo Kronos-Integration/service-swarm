@@ -31,6 +31,11 @@ export class Topic {
   }
 
   addSocket(socket) {
+    if(this.sockets.has(socket)) {
+      this.service.error(`socket already present`);
+      return;
+    }
+
     this.sockets.add(socket);
     this.topicEndpoints.forEach(e => e.addSocket(socket));
 

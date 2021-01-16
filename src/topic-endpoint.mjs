@@ -39,6 +39,11 @@ export class TopicEndpoint extends MultiSendEndpoint {
   }
 
   async addSocket(socket) {
+    if(this.sockets.has(socket)) {
+      this.owner.error(`socket already present`);
+      return;
+    }
+
     this.sockets.add(socket);
     pipeline(this.encode, socket, e => {
       this.owner.trace(`${this} pipeline end ${e}`);
@@ -72,8 +77,6 @@ export class TopicEndpoint extends MultiSendEndpoint {
   async receive(arg) {
     const interceptors = this.receivingInterceptors;
     let c = 0;
-
-    //console.log("RECEIVE",interceptors,arg);
 
     const next = async arg => {
       if (c >= interceptors.length) {
