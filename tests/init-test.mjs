@@ -1,15 +1,13 @@
 import test from "ava";
+import { initialize } from "./helpers/util.mjs";
 import { StandaloneServiceProvider } from "@kronos-integration/service";
 import { SendEndpoint, ReceiveEndpoint } from "@kronos-integration/endpoint";
-
 import { ServiceSwarm } from "@kronos-integration/service-swarm";
 
 test("start / stop", async t => {
   const sp = new StandaloneServiceProvider();
-
   const key = "11-3232-334545-fff-ggff6f-gr-df58";
-
-  const bootstrap = [`127.0.0.1:61418`];
+  const { bootstrap, close } = await initialize();
 
   const options = {
     didConnect: endpoint => {
@@ -60,7 +58,7 @@ test("start / stop", async t => {
     type: ServiceSwarm,
     name: "ss2",
     key,
-    // bootstrap,
+    bootstrap,
     endpoints: {
       "topic.t1": { connected: s2, announce: false }
     }
@@ -90,4 +88,6 @@ test("start / stop", async t => {
 
   t.is(ss1.state, "stopped");
   t.is(ss2.state, "stopped");
+
+  await close();
 });
