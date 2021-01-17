@@ -11,13 +11,10 @@ test("start / stop", async t => {
 
   const options = {
     didConnect: endpoint => {
-      console.log("connected", endpoint);
       return async () => {
-        console.log("disconnect", r);
       };
     },
     receive: r => {
-      console.log("XXX received", r);
       return "xxx";
     }
   };
@@ -25,7 +22,6 @@ test("start / stop", async t => {
   const s1 = new ReceiveEndpoint("s1", sp, options);
   const ps1 = new ReceiveEndpoint("ps1", sp, {
     receive: peers => {
-      console.log("peers received", peers);
     }
   });
 
@@ -66,7 +62,7 @@ test("start / stop", async t => {
 
   await Promise.all([ss1.start(), ss2.start()]);
 
-  await new Promise(resolve => setTimeout(resolve, 50000));
+  await new Promise(resolve => setTimeout(resolve, 1000));
 
   t.is(ss1.state, "running");
   t.is(ss2.state, "running");
