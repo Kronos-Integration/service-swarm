@@ -1,7 +1,7 @@
 import test from "ava";
 import { initialize } from "./helpers/util.mjs";
 import { StandaloneServiceProvider } from "@kronos-integration/service";
-import { SendEndpoint, ReceiveEndpoint } from "@kronos-integration/endpoint";
+import { ReceiveEndpoint } from "@kronos-integration/endpoint";
 import { ServiceSwarm } from "@kronos-integration/service-swarm";
 
 test("start / stop", async t => {
@@ -11,8 +11,7 @@ test("start / stop", async t => {
 
   const options = {
     didConnect: endpoint => {
-      return async () => {
-      };
+      return async () => {};
     },
     receive: r => {
       return "xxx";
@@ -21,8 +20,7 @@ test("start / stop", async t => {
 
   const s1 = new ReceiveEndpoint("s1", sp, options);
   const ps1 = new ReceiveEndpoint("ps1", sp, {
-    receive: peers => {
-    }
+    receive: peers => {}
   });
 
   const ss1 = await sp.declareService({
@@ -62,7 +60,7 @@ test("start / stop", async t => {
 
   await Promise.all([ss1.start(), ss2.start()]);
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   t.is(ss1.state, "running");
   t.is(ss2.state, "running");

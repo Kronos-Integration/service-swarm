@@ -1,4 +1,4 @@
-import dht  from "@hyperswarm/dht";
+import dht from "@hyperswarm/dht";
 import { once } from "nonsynchronous";
 
 export async function initialize() {
@@ -7,12 +7,12 @@ export async function initialize() {
     ephemeral: true
   });
   node.listen();
-  await once(node, 'listening');
+  await once(node, "listening");
   const { port } = node.address();
   return {
     port,
     bootstrap: [`127.0.0.1:${port}`],
-    close (...others) {
+    close(...others) {
       let missing = 1;
 
       for (const n of others) {
@@ -21,11 +21,10 @@ export async function initialize() {
       }
       done();
 
-      function done () {
+      function done() {
         if (--missing) return;
         node.destroy();
       }
     }
   };
 }
-
