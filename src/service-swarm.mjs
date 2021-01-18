@@ -38,7 +38,7 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "integer"
         },
-        maxClinetSockets: {
+        maxClientSockets: {
           needsRestart: true,
           type: "integer"
         },
@@ -113,7 +113,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       maxClientSockets: this.maxClientSockets,
       multiplex: true,
       /*validatePeer: (peer) => {
-        this.info(`validatePeer ${JSON.stringify(peer)}`);
+        this.trace(`validatePeer ${JSON.stringify(peer)}`);
         return true;
       }*/
     });
@@ -122,10 +122,10 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
     await Promise.all(
       [...this.topics.values()].map(topic => {
-        this.info(`join topic ${topic.name} ${JSON.stringify(topic.options)}`);
+        this.trace(`join topic ${topic.name} ${JSON.stringify(topic.options)}`);
         return new Promise(resolve => {
           this.swarm.join(topic.key, topic.options, () => {
-            this.info(`joined topic ${topic.name}`);
+            this.trace(`joined topic ${topic.name}`);
             resolve();
           });
         });
@@ -138,7 +138,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     });
 
     swarm.on("peer-rejected", peer => {
-      this.info(`peer-rejected: ${JSON.stringify(peer)}`);
+      this.trace(`peer-rejected: ${JSON.stringify(peer)}`);
     });
 
     /*swarm.on("updated", key => {
@@ -146,7 +146,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     });*/
 
     swarm.on("connection", async (socket, info) => {
-      this.info(
+      this.trace(
         `connection: peer=${info.peer ? "true" : "false"} client=${
           info.client ? "true" : "false"
         } ${JSON.stringify(socket.address())} ${socket.remoteAddress}`
@@ -155,12 +155,12 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       if (info.peer) {
         const topic = this.topics.get(info.peer.topic);
 
-        this.info(`Connection for topic ${topic.name}`);
+        this.trace(`Connection for topic ${topic.name}`);
 
         topic.addSocket(socket);
 
-        socket.on("drain", () => this.info("socket drain"));
-        socket.on("timeout", () => this.info("socket timeout"));
+        socket.on("drain", () => this.trace("socket drain"));
+        socket.on("timeout", () => this.trace("socket timeout"));
 
         const encode = new Encode();
 
@@ -170,22 +170,22 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         }, 5 * 60 * 1000);*/
 
         pipeline(encode, socket, e => {
-          this.info(`Encoding pipeline end ${e}`);
+          this.trace(`Encoding pipeline end ${e}`);
         });
 
-        this.info(`Encoding pipeline established ${topic.name}`);
+        this.trace(`Encoding pipeline established ${topic.name}`);
       }
 
       const decode = new Decode({ objectMode: true, encoding: "utf8" });
 
       pipeline(socket, decode, e => {
-        this.info(`Decoding pipeline end ${e}`);
+        this.trace(`Decoding pipeline end ${e}`);
       });
 
-      this.info(`Decoding pipeline established`);
+      this.trace(`Decoding pipeline established`);
 
       decode.on("data", data => {
-        this.info(`got ${data}`);
+        this.trace(`got ${data}`);
       });
     });
 
@@ -196,7 +196,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         if (topic) {
           topic.removePeer(info.peer);
         } else {
-          this.info(`disconnection: unknown topic`);
+          this.trace(`disconnection: unknown topic`);
         }
       }
     });
@@ -205,10 +205,10 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   async _stop() {
     return Promise.all(
       [...this.topics.values()].map(topic => {
-        this.info(`leave topic ${topic.name}`);
+        this.trace(`leave topic ${topic.name}`);
         return new Promise(resolve => {
           this.swarm.join(topic.key, () => {
-            this.info(`leaved topic ${topic.name}`);
+            this.trace(`leaved topic ${topic.name}`);
             resolve();
           });
         });
