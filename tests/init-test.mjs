@@ -1,5 +1,5 @@
 import test from "ava";
-import { initialize } from "./helpers/util.mjs";
+import { initialize, wait, publicAddress } from "./helpers/util.mjs";
 import { StandaloneServiceProvider } from "@kronos-integration/service";
 import { ReceiveEndpoint } from "@kronos-integration/endpoint";
 import { ServiceSwarm } from "@kronos-integration/service-swarm";
@@ -9,48 +9,59 @@ test("start / stop", async t => {
   const key = "11-3232-334545-fff-ggff6f-gr-df58";
   const { bootstrap, close } = await initialize();
 
+  let peers1, receive1;
+
   const options = {
-    didConnect: endpoint => {
-      return async () => {};
-    },
     receive: r => {
+      console.log("receive", this, r);
       return "xxx";
     }
   };
 
-  const s1 = new ReceiveEndpoint("s1", sp, options);
-  const ps1 = new ReceiveEndpoint("ps1", sp, {
-    receive: peers => {}
+  const s1 = new ReceiveEndpoint("s1", sp, {
+    receive: r => {
+      receive1 = r;
+      return "xxx";
+    }
   });
 
-  const ss1 = await sp.declareService({
+  const serviceSwarm1 = await sp.declareService({
     type: ServiceSwarm,
-    name: "ss1",
+    name: "serviceSwarm1",
     key,
     endpoints: {
       "topic.t1": {
         connected: s1
       },
       "peers.t1": {
-        connected: ps1
+        connected: new ReceiveEndpoint("peers@1", sp, {
+          receive: peers => (peers1 = peers)
+        })
       }
     }
   });
 
-  t.is(ss1.endpoints["topic.t1"].name, "topic.t1");
-  t.is(ss1.endpoints["topic.t1"].topic, ss1.topicsByName.get("t1"));
-  t.true(
-    ss1.topicsByName.get("t1").topicEndpoints.has(ss1.endpoints["topic.t1"])
+  t.is(serviceSwarm1.endpoints["topic.t1"].name, "topic.t1");
+  t.is(
+    serviceSwarm1.endpoints["topic.t1"].topic,
+    serviceSwarm1.topicsByName.get("t1")
   );
   t.true(
-    ss1.topicsByName.get("t1").peersEndpoints.has(ss1.endpoints["peers.t1"])
+    serviceSwarm1.topicsByName
+      .get("t1")
+      .topicEndpoints.has(serviceSwarm1.endpoints["topic.t1"])
+  );
+  t.true(
+    serviceSwarm1.topicsByName
+      .get("t1")
+      .peersEndpoints.has(serviceSwarm1.endpoints["peers.t1"])
   );
 
   const s2 = new ReceiveEndpoint("s2", sp, options);
 
-  const ss2 = await sp.declareService({
+  const serviceSwarm2 = await sp.declareService({
     type: ServiceSwarm,
-    name: "ss2",
+    name: "serviceSwarm2",
     key,
     bootstrap,
     endpoints: {
@@ -58,30 +69,34 @@ test("start / stop", async t => {
     }
   });
 
-  await Promise.all([ss1.start(), ss2.start()]);
+  await Promise.all([serviceSwarm1.start(), serviceSwarm2.start()]);
 
-  await new Promise(resolve => setTimeout(resolve, 500));
+  t.is(serviceSwarm1.state, "running");
+  t.is(serviceSwarm2.state, "running");
 
-  t.is(ss1.state, "running");
-  t.is(ss2.state, "running");
+  t.true(serviceSwarm1.endpoints["topic.t1"].isConnected(s1));
+  t.true(serviceSwarm2.endpoints["topic.t1"].isConnected(s2));
 
-  t.true(ss1.endpoints["topic.t1"].isConnected(s1));
-  t.true(ss2.endpoints["topic.t1"].isConnected(s2));
+  console.log(await publicAddress());
 
-  //t.truthy(ss1.endpoints["topic.t1"].sockets.length > 0);
+  await wait(5000);
 
-  ss1.endpoints["topic.t1"].send("hello from ss1.topic.t1");
+  t.truthy(peers1);
+  //t.truthy(peers1.length > 1);
+  
 
-  /*
-  t.is(ss1.endpoints["topic.t1"].isOpen, true, "ss1.topic.t1 isOpen");
-  t.is(ss2.endpoints["topic.t1"].isOpen, true, "ss2.topic.t1 isOpen");
-  */
+  console.log(peers1);
 
-  //s1.send("hello");
-  await Promise.all([ss1.stop(), ss2.stop()]);
+  //t.truthy(serviceSwarm1.endpoints["topic.t1"].sockets.length > 0);
 
-  t.is(ss1.state, "stopped");
-  t.is(ss2.state, "stopped");
+  const response = await serviceSwarm1.endpoints["topic.t1"].send(
+    "hello from serviceSwarm1.topic.t1"
+  );
+
+  await Promise.all([serviceSwarm1.stop(), serviceSwarm2.stop()]);
+
+  t.is(serviceSwarm1.state, "stopped");
+  t.is(serviceSwarm2.state, "stopped");
 
   await close();
 });

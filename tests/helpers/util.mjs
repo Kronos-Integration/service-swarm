@@ -1,3 +1,4 @@
+import { get } from "http";
 import dht from "@hyperswarm/dht";
 import { once } from "nonsynchronous";
 
@@ -27,4 +28,25 @@ export async function initialize() {
       }
     }
   };
+}
+
+export async function wait(msecs = 1000) {
+  await new Promise(resolve => setTimeout(resolve, msecs));
+}
+
+export async function publicAddress() {
+  return new Promise((resolve, reject) => {
+    const req = get("http://ifconfig.me/ip", response => {
+      let data = "";
+      response.on("data", chunk => (data += chunk));
+
+      response.on("end", () => {
+        try {
+          resolve(data);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    });
+  });
 }
