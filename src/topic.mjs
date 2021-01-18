@@ -49,7 +49,7 @@ export class Topic {
     });
 
     socket.once("close", () => {
-      this.service.info("socket close");
+      this.service.trace("socket close");
       this.sockets.delete(socket);
     });
   }
@@ -84,7 +84,7 @@ referrer: {
     const key = peer.host + ":" + peer.port;
 
     if (!this.peers.has(key)) {
-      this.service.info(`add peer ${key}`);
+      this.service.trace(`add peer ${key}`);
       this.peers.set(key, peer);
       this.notifyPeerEndpoints();
     }
