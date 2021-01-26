@@ -42,7 +42,7 @@
     "c8": "^7.4.0",
     "documentation": "github:arlac77/documentation",
     "nonsynchronous": "^1.2.0",
-    "semantic-release": "^17.3.3"
+    "semantic-release": "^17.3.7"
   },
   "engines": {
     "node": ">=14.15.4"
