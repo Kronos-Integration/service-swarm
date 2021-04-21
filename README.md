@@ -3,7 +3,7 @@
 [![minified size](https://badgen.net/bundlephobia/min/@kronos-integration/service-swarm)](https://bundlephobia.com/result?p=@kronos-integration/service-swarm)
 [![downloads](http://img.shields.io/npm/dm/@kronos-integration/service-swarm.svg?style=flat-square)](https://npmjs.org/package/@kronos-integration/service-swarm)
 [![GitHub Issues](https://img.shields.io/github/issues/Kronos-Integration/service-swarm.svg?style=flat-square)](https://github.com/Kronos-Integration/service-swarm/issues)
-[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FKronos-Integration%2Fservice-swarm%2Fbadge&style=flat)](https://actions-badge.atrox.dev/Kronos-Integration/service-swarm/goto)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FKronos-Integration%2Fservice-swarm%2Fbadge\&style=flat)](https://actions-badge.atrox.dev/Kronos-Integration/service-swarm/goto)
 [![Styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![Known Vulnerabilities](https://snyk.io/test/github/Kronos-Integration/service-swarm/badge.svg)](https://snyk.io/test/github/Kronos-Integration/service-swarm)
@@ -19,21 +19,21 @@ Manage a set of remote services
 
 ### Table of Contents
 
--   [PEERS_NAME_PREFIX](#peers_name_prefix)
--   [PeersEndpoint](#peersendpoint)
-    -   [Parameters](#parameters)
-    -   [Properties](#properties)
--   [ServiceSwarm](#serviceswarm)
-    -   [endpointFactoryFromConfig](#endpointfactoryfromconfig)
-        -   [Parameters](#parameters-1)
-    -   [name](#name)
--   [TOPIC_NAME_PREFIX](#topic_name_prefix)
--   [TopicEndpoint](#topicendpoint)
-    -   [Parameters](#parameters-2)
-    -   [Properties](#properties-1)
--   [Topic](#topic)
-    -   [Parameters](#parameters-3)
-    -   [Properties](#properties-2)
+*   [PEERS_NAME_PREFIX](#peers_name_prefix)
+*   [PeersEndpoint](#peersendpoint)
+    *   [Parameters](#parameters)
+    *   [Properties](#properties)
+*   [ServiceSwarm](#serviceswarm)
+    *   [endpointFactoryFromConfig](#endpointfactoryfromconfig)
+        *   [Parameters](#parameters-1)
+    *   [name](#name)
+*   [TOPIC_NAME_PREFIX](#topic_name_prefix)
+*   [TopicEndpoint](#topicendpoint)
+    *   [Parameters](#parameters-2)
+    *   [Properties](#properties-1)
+*   [Topic](#topic)
+    *   [Parameters](#parameters-3)
+    *   [Properties](#properties-2)
 
 ## PEERS_NAME_PREFIX
 
@@ -49,14 +49,15 @@ Endpoint to link against a swarm topic.
 
 ### Parameters
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
--   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.topic` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defaults to endpoint name (without @see PEERS_NAME_PREFIX)
+*   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+*   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+
+    *   `options.topic` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defaults to endpoint name (without @see PEERS_NAME_PREFIX)
 
 ### Properties
 
--   `topic` **[Topic](#topic)** 
+*   `topic` **[Topic](#topic)** 
 
 ## ServiceSwarm
 
@@ -70,9 +71,9 @@ On demand create topic endpoints.
 
 #### Parameters
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `definition` **([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) \| [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))** 
--   `ic`  
+*   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+*   `definition` **([Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object) | [string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String))** 
+*   `ic`  
 
 Returns **Class** TopicEndpoint if name starts with 'topic.'
 
@@ -94,31 +95,32 @@ Endpoint to link against a swarm topic.
 
 ### Parameters
 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
--   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
-    -   `options.topic` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
+*   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** endpoint name
+*   `owner` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** owner of the endpoint
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+
+    *   `options.topic` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
 
 ### Properties
 
--   `topic` **[Topic](#topic)** 
+*   `topic` **[Topic](#topic)** 
 
 ## Topic
 
 ### Parameters
 
--   `service` **[ServiceSwarm](#serviceswarm)** 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
+*   `service` **[ServiceSwarm](#serviceswarm)** 
+*   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)**  (optional, default `{}`)
 
 ### Properties
 
--   `service` **[ServiceSwarm](#serviceswarm)** 
--   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
--   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
--   `key` **[Buffer](https://nodejs.org/api/buffer.html)** 
--   `topicEndpoints` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;TopicEndppoint>** 
--   `peerEndpoints` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)&lt;PeerEndpoint>** 
+*   `service` **[ServiceSwarm](#serviceswarm)** 
+*   `name` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+*   `options` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+*   `key` **[Buffer](https://nodejs.org/api/buffer.html)** 
+*   `topicEndpoints` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)\<TopicEndppoint>** 
+*   `peerEndpoints` **[Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)\<PeerEndpoint>** 
 
 # install
 
