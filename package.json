@@ -42,7 +42,7 @@
     "c8": "^7.10.0",
     "documentation": "^13.2.5",
     "nonsynchronous": "^1.2.0",
-    "semantic-release": "^18.0.0"
+    "semantic-release": "^18.0.1"
   },
   "engines": {
     "node": ">=16.13.0"
