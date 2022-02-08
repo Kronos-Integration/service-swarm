@@ -1,15 +1,18 @@
 import { get } from "http";
-import dht from "@hyperswarm/dht";
-import { once } from "nonsynchronous";
+import { setTimeout } from "timers/promises";
+import DHT from "@hyperswarm/dht";
 
 export async function initialize() {
-  const node = dht({
+  const node = new DHT({
     bootstrap: [],
     ephemeral: true
   });
-  node.listen();
-  await once(node, "listening");
-  const { port } = node.address();
+
+  const server = node.createServer();
+
+  await server.listen();
+  const { port } = server.address();
+
   return {
     port,
     bootstrap: [`127.0.0.1:${port}`],
@@ -31,7 +34,7 @@ export async function initialize() {
 }
 
 export async function wait(msecs = 1000) {
-  await new Promise(resolve => setTimeout(resolve, msecs));
+  return setTimeout(msecs);
 }
 
 export async function publicAddress() {

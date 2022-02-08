@@ -1,5 +1,5 @@
 import { pipeline } from "stream";
-import hyperswarm from "hyperswarm";
+import Hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
 import { mergeAttributes, createAttributes } from "model-attributes";
 import { Service } from "@kronos-integration/service";
@@ -105,7 +105,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   }
 
   async _start() {
-    const swarm = hyperswarm({
+    const swarm = new Hyperswarm({
       bootstrap: this.bootstrap,
       ephemeral: this.ephemeral,
       maxPeers: this.maxPeers,
