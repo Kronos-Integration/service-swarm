@@ -3,6 +3,7 @@ import { setTimeout } from "timers/promises";
 import DHT from "@hyperswarm/dht";
 
 export async function initialize() {
+/*
   const node = new DHT({
     bootstrap: [],
     ephemeral: true
@@ -10,8 +11,27 @@ export async function initialize() {
 
   const server = node.createServer();
 
-  await server.listen();
-  const { port } = server.address();
+  server.on('connection', noiseSocket => { 
+    // noiseSocket is E2E between you and the other peer
+    // pipe it somewhere like any duplex stream
+    console.log('Remote public key', noiseSocket.remotePublicKey);
+    console.log('Local public key', noiseSocket.publicKey);
+    // same as keyPair.publicKey
+    process.stdin.pipe(noiseSocket).pipe(process.stdout);
+  });
+
+
+  const keyPair = DHT.keyPair()
+  // this makes the server accept connections on this keypairawait server.listen(keyPair)
+
+  await server.listen(keyPair);
+*/
+
+  const node = DHT.bootstrapper(49736);
+  await node.ready();
+  //console.log("BOOTSTRAP NODE", bootstrap.address());
+  
+  let { port } = node.address();
 
   return {
     port,
