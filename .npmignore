@@ -8,3 +8,4 @@ doc
 .vscode
 .github
 update.sh
+jsconfig.json
