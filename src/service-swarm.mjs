@@ -23,10 +23,10 @@ export class ServiceSwarm extends Service {
   static get configurationAttributes() {
     return mergeAttributes(
       createAttributes({
-        bootstrap: {
-          description: "well known peer addresses",
+        dht: {
+          description: "well known dht addresses",
           needsRestart: true,
-          type: "string"
+          type: "object"
         },
         maxPeers: {
           description: "total amount of peers that this peer will connect to",
@@ -106,7 +106,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
   async _start() {
     const swarm = new Hyperswarm({
-      bootstrap: this.bootstrap,
+      dht: this.dht,
       ephemeral: this.ephemeral,
       maxPeers: this.maxPeers,
       maxServerSockets: this.maxServerSockets,
@@ -120,17 +120,6 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
 
     this.swarm = swarm;
 
-    await Promise.all(
-      [...this.topics.values()].map(topic => {
-        this.trace(`join topic ${topic.name} ${JSON.stringify(topic.options)}`);
-        return new Promise(resolve => {
-          this.swarm.join(topic.key, topic.options, () => {
-            this.trace(`joined topic ${topic.name}`);
-            resolve();
-          });
-        });
-      })
-    );
 
     swarm.on("peer", peer => {
       const topic = this.topics.get(peer.topic);
@@ -141,19 +130,17 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       this.trace(`peer-rejected: ${JSON.stringify(peer)}`);
     });
 
-    /*swarm.on("updated", key => {
-      this.info(`updated: ${JSON.stringify(key)}`);
-    });*/
-
-    swarm.on("connection", async (socket, info) => {
+    swarm.on("connection", async (socket, peerInfo) => {
+      console.log(socket,peerInfo);
+      /*
       this.trace(
         `connection: peer=${info.peer ? "true" : "false"} client=${
           info.client ? "true" : "false"
         } ${JSON.stringify(socket.address())} ${socket.remoteAddress}`
-      );
+      );*/
 
-      if (info.peer) {
-        const topic = this.topics.get(info.peer.topic);
+      if (peerInfo) {
+        const topic = this.topics.get(peerInfo.peer.topic);
 
         this.trace(`Connection for topic ${topic.name}`);
 
@@ -169,24 +156,18 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
           encode.write(`hello from ${hostname()}`);
         }, 5 * 60 * 1000);*/
 
-        pipeline(encode, socket, e => {
-          this.trace(`Encoding pipeline end ${e}`);
-        });
+        pipeline(encode, socket, e => this.trace(`Encoding pipeline end ${e}`));
 
         this.trace(`Encoding pipeline established ${topic.name}`);
       }
 
       const decode = new Decode({ objectMode: true, encoding: "utf8" });
 
-      pipeline(socket, decode, e => {
-        this.trace(`Decoding pipeline end ${e}`);
-      });
+      pipeline(socket, decode, e => this.trace(`Decoding pipeline end ${e}`));
 
       this.trace(`Decoding pipeline established`);
 
-      decode.on("data", data => {
-        this.trace(`got ${data}`);
-      });
+      decode.on("data", data => this.trace(`got ${data}`));
     });
 
     swarm.on("disconnection", (socket, info) => {
@@ -200,6 +181,18 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
         }
       }
     });
+
+    await Promise.all(
+      [...this.topics.values()].map(topic => {
+        this.trace(`join topic ${topic.name} ${JSON.stringify(topic.options)}`);
+        return new Promise(resolve => {
+          this.swarm.join(topic.key, topic.options, () => {
+            this.trace(`joined topic ${topic.name}`);
+            resolve();
+          });
+        });
+      })
+    );
   }
 
   async _stop() {

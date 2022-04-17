@@ -7,7 +7,7 @@ import { ServiceSwarm } from "@kronos-integration/service-swarm";
 test("start / stop", async t => {
   const sp = new StandaloneServiceProvider();
   const key = "11-3232-334545-fff-ggff6f-gr-df58";
-  const { bootstrap, close } = await initialize();
+  const { dht, close } = await initialize();
 
   let peers1, receive1;
 
@@ -63,7 +63,7 @@ test("start / stop", async t => {
     type: ServiceSwarm,
     name: "serviceSwarm2",
     key,
-    bootstrap,
+    dht,
     endpoints: {
       "topic.t1": { connected: s2, announce: false }
     }

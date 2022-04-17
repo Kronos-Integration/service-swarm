@@ -5,7 +5,6 @@ import DHT from "@hyperswarm/dht";
 export async function initialize() {
 /*
   const node = new DHT({
-    bootstrap: [],
     ephemeral: true
   });
 
@@ -27,15 +26,13 @@ export async function initialize() {
   await server.listen(keyPair);
 */
 
-  const node = DHT.bootstrapper(49736);
-  await node.ready();
-  //console.log("BOOTSTRAP NODE", bootstrap.address());
+  const dht = new DHT(); // DHT.bootstrapper(49736);
+  await dht.ready();
   
-  let { port } = node.address();
+  console.log("DHT", dht.address());
 
   return {
-    port,
-    bootstrap: [`127.0.0.1:${port}`],
+    dht,
     close(...others) {
       let missing = 1;
 
