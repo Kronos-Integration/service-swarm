@@ -28,6 +28,7 @@ test("start / stop", async t => {
   const serviceSwarm1 = await sp.declareService({
     type: ServiceSwarm,
     name: "serviceSwarm1",
+//    logLevel: "trace",
     key,
     endpoints: {
       "topic.t1": {
@@ -62,6 +63,7 @@ test("start / stop", async t => {
   const serviceSwarm2 = await sp.declareService({
     type: ServiceSwarm,
     name: "serviceSwarm2",
+    logLevel: "trace",
     key,
     dht,
     endpoints: {
