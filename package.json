@@ -34,7 +34,7 @@
     "@kronos-integration/service": "^10.4.34",
     "hyperswarm": "^4.1.0",
     "length-prefix-framed-stream": "^2.0.9",
-    "model-attributes": "^4.2.0"
+    "model-attributes": "^4.2.1"
   },
   "devDependencies": {
     "@hyperswarm/dht": "^6.0.2",
