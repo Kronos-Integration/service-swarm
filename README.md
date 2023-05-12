@@ -1,6 +1,6 @@
 [![npm](https://img.shields.io/npm/v/@kronos-integration/service-swarm.svg)](https://www.npmjs.com/package/@kronos-integration/service-swarm)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Open Bundle](https://bundlejs.com/badge-light.svg)](https://bundlejs.com/?q=@kronos-integration/service-swarm)
+[![bundlejs](https://deno.bundlejs.com/?q=@kronos-integration/service-swarm\&badge=detailed)](https://bundlejs.com/?q=@kronos-integration/service-swarm)
 [![downloads](http://img.shields.io/npm/dm/@kronos-integration/service-swarm.svg?style=flat-square)](https://npmjs.org/package/@kronos-integration/service-swarm)
 [![GitHub Issues](https://img.shields.io/github/issues/Kronos-Integration/service-swarm.svg?style=flat-square)](https://github.com/Kronos-Integration/service-swarm/issues)
 [![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FKronos-Integration%2Fservice-swarm%2Fbadge\&style=flat)](https://actions-badge.atrox.dev/Kronos-Integration/service-swarm/goto)
