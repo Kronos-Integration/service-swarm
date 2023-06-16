@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@hyperswarm/dht": "^6.0.2",
-    "ava": "^5.3.0",
+    "ava": "^5.3.1",
     "c8": "^8.0.0",
     "documentation": "^14.0.2",
     "nonsynchronous": "^1.2.0",
