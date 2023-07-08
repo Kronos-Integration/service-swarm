@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@kronos-integration/endpoint": "^9.4.42",
-    "@kronos-integration/service": "^10.4.48",
+    "@kronos-integration/service": "^10.4.49",
     "hyperswarm": "^4.3.5",
     "length-prefix-framed-stream": "^2.0.12",
     "model-attributes": "^4.2.2"
