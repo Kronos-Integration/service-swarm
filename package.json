@@ -39,7 +39,7 @@
   "devDependencies": {
     "@hyperswarm/dht": "^6.0.2",
     "ava": "^5.3.1",
-    "c8": "^8.0.0",
+    "c8": "^8.0.1",
     "documentation": "^14.0.2",
     "nonsynchronous": "^1.2.0",
     "semantic-release": "^21.0.7"
