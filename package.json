@@ -31,12 +31,12 @@
   "dependencies": {
     "@kronos-integration/endpoint": "^9.4.42",
     "@kronos-integration/service": "^10.4.50",
-    "hyperswarm": "^4.3.5",
+    "hyperswarm": "^4.7.4",
     "length-prefix-framed-stream": "^2.0.12",
     "model-attributes": "^4.2.2"
   },
   "devDependencies": {
-    "@hyperswarm/dht": "^6.0.2",
+    "@hyperswarm/dht": "^6.5.1",
     "ava": "^5.3.1",
     "c8": "^8.0.1",
     "documentation": "^14.0.2",
