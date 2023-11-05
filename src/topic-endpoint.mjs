@@ -1,4 +1,4 @@
-import { pipeline } from "stream";
+import { pipeline } from "node:stream";
 import { MultiSendEndpoint } from "@kronos-integration/endpoint";
 import { Encode } from "length-prefix-framed-stream";
 

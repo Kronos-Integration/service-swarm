@@ -1,4 +1,4 @@
-import { pipeline } from "stream";
+import { pipeline } from "node:stream";
 import Hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
 import { mergeAttributes, createAttributes } from "model-attributes";
