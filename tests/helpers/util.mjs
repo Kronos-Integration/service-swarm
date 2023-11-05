@@ -1,5 +1,5 @@
-import { get } from "http";
-import { setTimeout } from "timers/promises";
+import { get } from "node:http";
+import { setTimeout } from "node:timers/promises";
 import DHT from "@hyperswarm/dht";
 
 export async function initialize() {
