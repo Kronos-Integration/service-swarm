@@ -42,7 +42,7 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "integer"
         },
-        
+
         /*
         "node-id": {
           description: "id of our node",
@@ -111,7 +111,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
       maxPeers: this.maxPeers,
       maxServerSockets: this.maxServerSockets,
       maxClientSockets: this.maxClientSockets,
-      multiplex: true,
+      multiplex: true
       /*validatePeer: (peer) => {
         this.trace(`validatePeer ${JSON.stringify(peer)}`);
         return true;
@@ -119,7 +119,6 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     });
 
     this.swarm = swarm;
-
 
     swarm.on("peer", peer => {
       const topic = this.topics.get(peer.topic);
@@ -131,7 +130,7 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
     });
 
     swarm.on("connection", async (socket, peerInfo) => {
-      console.log(socket,peerInfo);
+      console.log(socket, peerInfo);
       /*
       this.trace(
         `connection: peer=${info.peer ? "true" : "false"} client=${
