@@ -1,7 +1,8 @@
-import hyperswarm from "hyperswarm";
+import Hyperswarm from "hyperswarm";
 import { createHash } from "crypto";
 
-const swarm = hyperswarm();
+
+const swarm = new Hyperswarm();
 
 const topic = createHash("sha256").update("sdlfjksdfjdflk56kj5jk5jk54lk6sdcfffmgdfklf" + "uptime").digest();
 
