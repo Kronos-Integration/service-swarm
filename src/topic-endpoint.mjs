@@ -20,20 +20,15 @@ export class TopicEndpoint extends MultiSendEndpoint {
     return name.startsWith(TOPIC_NAME_PREFIX);
   }
 
-  constructor(name, owner, options = {}) {
+  sockets = new Set();
+  encode = new Encode();
+
+  constructor(name, owner, options) {
     super(name, owner, options);
 
-    const topicName = options.topic
-      ? options.topic
-      : name.replace(TOPIC_NAME_PREFIX, "");
+    const topicName = options?.topic || name.replace(TOPIC_NAME_PREFIX, "");
 
-    Object.defineProperties(this, {
-      topic: {
-        value: owner.createTopic(topicName, options)
-      },
-      sockets: { value: new Set() },
-      encode: { value: new Encode() }
-    });
+    this.topic = owner.createTopic(topicName, options);
 
     this.topic.addTopicEndpoint(this);
   }

@@ -11,7 +11,8 @@ import { PeersEndpoint } from "./peers-endpoint.mjs";
  * Swarm detecting sync service.
  */
 export class ServiceSwarm extends Service {
-  //topics = new Map();
+  topics = new Map();
+  topicsByName = new Map();
 
   /**
    * @return {string} 'swarm'
@@ -34,31 +35,6 @@ export class ServiceSwarm extends Service {
           needsRestart: true,
           type: "integer"
         },
-        maxServerSockets: {
-          needsRestart: true,
-          type: "integer"
-        },
-        maxClientSockets: {
-          needsRestart: true,
-          type: "integer"
-        },
-
-        /*
-        "node-id": {
-          description: "id of our node",
-          needsRestart: true,
-          type: "string"
-        },
-        */
-        ephemeral: {
-          description: `Set to false if this is a long running instance on a server
-When running in ephemeral mode you don't join the DHT but just 
-query it instead. If unset, or set to a non-boolean (default undefined)
-then the node will start in short-lived (ephemeral) mode and switch 
-to long-lived (non-ephemeral) mode after a certain period of uptime`,
-          needsRestart: true,
-          type: "boolean"
-        },
         key: {
           description: "topic initial key",
           needsRestart: true,
@@ -71,16 +47,11 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   }
 
   createTopic(name, options) {
-    if (!this.topics) {
-      this.topics = new Map(); // TODO why ?
-      this.topicsByName = new Map(); // TODO why ?
-    }
-
     let topic = this.topicsByName.get(name);
     if (!topic) {
       topic = new Topic(this, name, options);
       this.topicsByName.set(name, topic);
-      this.topics.set(topic.key, topic, options);
+      this.topics.set(topic.key, topic);
     }
 
     return topic;
@@ -105,28 +76,20 @@ to long-lived (non-ephemeral) mode after a certain period of uptime`,
   }
 
   async _start() {
-    const swarm = new Hyperswarm({
+    const swarm = (this.swarm = new Hyperswarm({
+      server: true,
+      client: false,
       dht: this.dht,
-      ephemeral: this.ephemeral,
-      maxPeers: this.maxPeers,
-      maxServerSockets: this.maxServerSockets,
-      maxClientSockets: this.maxClientSockets,
-      multiplex: true
-      /*validatePeer: (peer) => {
-        this.trace(`validatePeer ${JSON.stringify(peer)}`);
-        return true;
-      }*/
-    });
+      maxPeers: this.maxPeers
+    }));
 
-    this.swarm = swarm;
+    swarm.on("update", () => {
+      console.log("Hyperswarm update", swarm);
+    });
 
     swarm.on("peer", peer => {
       const topic = this.topics.get(peer.topic);
       topic.addPeer(peer);
-    });
-
-    swarm.on("peer-rejected", peer => {
-      this.trace(`peer-rejected: ${JSON.stringify(peer)}`);
     });
 
     swarm.on("connection", async (socket, peerInfo) => {

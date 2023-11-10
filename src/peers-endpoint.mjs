@@ -19,18 +19,12 @@ export class PeersEndpoint extends MultiSendEndpoint {
     return name.startsWith(PEERS_NAME_PREFIX);
   }
 
-  constructor(name, owner, options = {}) {
+  constructor(name, owner, options) {
     super(name, owner, options);
 
-    const topicName = options.topic
-      ? options.topic
-      : name.replace(PEERS_NAME_PREFIX, "");
+    const topicName = options?.topic || name.replace(PEERS_NAME_PREFIX, "");
 
-    Object.defineProperties(this, {
-      topic: {
-        value: owner.createTopic(topicName, options)
-      }
-    });
+    this.topic = owner.createTopic(topicName, options);
 
     this.topic.addPeersEndpoint(this);
   }
