@@ -22,8 +22,8 @@ test("topic endpoint", t => {
     out: true,
     topic: {
       name: "t1",
-      announce: true,
-      lookup: true,
+      server: false,
+      client: true,
       sockets: 0,
       peers: []
     },
@@ -47,8 +47,8 @@ test("peers endpoint", t => {
     out: true,
     topic: {
       name: "t1",
-      announce: true,
-      lookup: true,
+      server: false,
+      client: true,
       sockets: 0,
       peers: []
     }

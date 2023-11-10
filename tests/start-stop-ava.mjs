@@ -9,7 +9,7 @@ test("start / stop", async t => {
   const key = "11-3232-334545-fff-ggff6f-gr-df58";
   const { dht, close } = await initialize();
 
-  let peers1, receive1;
+  let peers1;
 
   const options = {
     receive: r => {
@@ -28,7 +28,8 @@ test("start / stop", async t => {
   const serviceSwarm1 = await sp.declareService({
     type: ServiceSwarm,
     name: "serviceSwarm1",
-//    logLevel: "trace",
+    server: true,
+    logLevel: "trace",
     key,
     endpoints: {
       "topic.t1": {
@@ -41,6 +42,9 @@ test("start / stop", async t => {
       }
     }
   });
+
+        /*
+    */
 
   t.is(serviceSwarm1.endpoints["topic.t1"].name, "topic.t1");
   t.is(
@@ -63,6 +67,7 @@ test("start / stop", async t => {
   const serviceSwarm2 = await sp.declareService({
     type: ServiceSwarm,
     name: "serviceSwarm2",
+    client: true,
     logLevel: "trace",
     key,
     dht,
@@ -85,7 +90,6 @@ test("start / stop", async t => {
 
   t.truthy(peers1);
   //t.truthy(peers1.length > 1);
-  
 
   console.log(peers1);
 

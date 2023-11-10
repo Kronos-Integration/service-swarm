@@ -24,6 +24,16 @@ export class ServiceSwarm extends Service {
   static get configurationAttributes() {
     return mergeAttributes(
       createAttributes({
+        server: {
+          needsRestart: true,
+          default: false,
+          type: "boolean"
+        },
+        client: {
+          needsRestart: true,
+          default: false,
+          type: "boolean"
+        },
         dht: {
           description: "well known dht addresses",
           needsRestart: true,
@@ -76,12 +86,19 @@ export class ServiceSwarm extends Service {
   }
 
   async _start() {
-    const swarm = (this.swarm = new Hyperswarm({
-      server: true,
-      client: false,
+    const swarm = this.swarm = new Hyperswarm({
       dht: this.dht,
-      maxPeers: this.maxPeers
-    }));
+      maxPeers: this.maxPeers});
+
+      /*
+    this.discovery = swarm.join(
+      topic,
+        ? {
+            server: this.server,
+            client: this.client
+          }
+    );
+    */
 
     swarm.on("update", () => {
       console.log("Hyperswarm update", swarm);
@@ -112,11 +129,6 @@ export class ServiceSwarm extends Service {
         socket.on("timeout", () => this.trace("socket timeout"));
 
         const encode = new Encode();
-
-        /*
-        setInterval(() => {
-          encode.write(`hello from ${hostname()}`);
-        }, 5 * 60 * 1000);*/
 
         pipeline(encode, socket, e => this.trace(`Encoding pipeline end ${e}`));
 

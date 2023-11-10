@@ -13,25 +13,26 @@ import { createHash } from "node:crypto";
  * @property {Set<PeerEndpoint>} peerEndpoints
  */
 export class Topic {
-  constructor(service, name, options = {}) {
-    Object.defineProperties(this, {
-      service: { value: service },
-      peers: { value: new Map() },
-      sockets: { value: new Set() },
-      topicEndpoints: { value: new Set() },
-      peersEndpoints: { value: new Set() },
-      name: { value: name },
-      options: { value: { lookup: true, announce: true, ...options } },
-      key: {
-        value: createHash("sha256")
-          .update(service.key + name)
-          .digest()
-      }
-    });
+  peers = new Map();
+  sockets = new Set();
+  topicEndpoints = new Set();
+  peersEndpoints = new Set();
+
+  constructor(service, name, options) {
+    this.service = service;
+    this.name = name;
+    this.options = { server: false, client: true, ...options };
+    this.key = createHash("sha256")
+      .update(service.key + name)
+      .digest();
+  }
+
+  join() {
+    return this.service.swarm.join(this.key, this.options);
   }
 
   addSocket(socket) {
-    if(this.sockets.has(socket)) {
+    if (this.sockets.has(socket)) {
       this.service.error(`socket already present`);
       return;
     }
@@ -68,7 +69,7 @@ export class Topic {
   }
 
   addPeer(peer) {
-/*
+    /*
 port: 45505
 host: '10.0.6.2'
 local: true
@@ -111,8 +112,8 @@ referrer: {
         return { host: p.host, port: p.port, local: p.local };
       }),
       sockets: this.sockets.size,
-      announce: this.options.announce,
-      lookup: this.options.lookup
+      server: this.options.server,
+      client: this.options.client
     };
   }
 }
