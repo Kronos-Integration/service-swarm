@@ -1,17 +1,23 @@
 import Hyperswarm from "hyperswarm";
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 
+let isServer = process.argv.at(-1) === "server";
 
 const swarm = new Hyperswarm();
 
-const topic = createHash("sha256").update("sdlfjksdfjdflk56kj5jk5jk54lk6sdcfffmgdfklf" + "uptime").digest();
+const topic = createHash("sha256")
+  .update("sdlfjksdfjdflk56kj5jk5jk54lk6sdcfffmgdfklf")
+  .digest();
 
-swarm.join(topic, {
-  lookup: true, // find & connect to peers
-  announce: true // optional- announce self as a connection target
-},() => {
-    console.log("joined");
-});
+const discovery = swarm.join(
+  topic,
+  isServer
+    ? {
+        server: true,
+        client: false
+      }
+    : { server: false, client: true }
+);
 
 swarm.on("connection", (socket, info) => {
   console.log("new connection!", info);
@@ -19,3 +25,8 @@ swarm.on("connection", (socket, info) => {
   // you can now use the socket as a stream, eg:
   process.stdin.pipe(socket).pipe(process.stdout);
 });
+
+await discovery.flushed();
+
+
+console.log("flushed");
