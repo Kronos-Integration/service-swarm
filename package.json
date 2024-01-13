@@ -41,7 +41,7 @@
     "c8": "^9.1.0",
     "documentation": "^14.0.2",
     "nonsynchronous": "^1.2.0",
-    "semantic-release": "^22.0.12"
+    "semantic-release": "^23.0.0"
   },
   "engines": {
     "node": ">=20.11.0"
