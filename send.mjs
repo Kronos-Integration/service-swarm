@@ -1,7 +1,7 @@
 import Hyperswarm from "hyperswarm";
 import { createHash } from "node:crypto";
 
-let isServer = process.argv.at(-1) === "server";
+const isServer = process.argv.at(-1) === "server";
 
 const swarm = new Hyperswarm();
 
@@ -29,4 +29,4 @@ swarm.on("connection", (socket, info) => {
 await discovery.flushed();
 
 
-console.log("flushed");
+console.log("flushed",isServer);
