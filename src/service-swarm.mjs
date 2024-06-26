@@ -11,8 +11,8 @@ import { PeersEndpoint } from "./peers-endpoint.mjs";
  * Swarm detecting sync service.
  */
 export class ServiceSwarm extends Service {
-  topics = new Map();
-  topicsByName = new Map();
+  _topics; // = new Map();
+  _topicsByName; // = new Map();
 
   /**
    * @return {string} 'swarm'
@@ -56,6 +56,22 @@ export class ServiceSwarm extends Service {
     );
   }
 
+  get topics()
+  {
+  	if(!this._topics) {
+  		this._topics = new Map();
+  	}
+  	return this._topics;
+  }
+
+  get topicsByName()
+  {
+    if(!this._topicsByName) {
+       this._topicsByName = new Map(); 	
+    }
+    return this._topicsByName;
+  }
+  
   createTopic(name, options) {
     let topic = this.topicsByName.get(name);
     if (!topic) {
