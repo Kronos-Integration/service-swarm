@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import Hyperswarm from "hyperswarm";
 import { createHash } from "node:crypto";
 
