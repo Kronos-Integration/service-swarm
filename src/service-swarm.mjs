@@ -1,7 +1,7 @@
 import { pipeline } from "node:stream";
 import Hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
-import { prepareAttributesDefinitions, mergeAttributeDefinitions } from "model-attributes";
+import { prepareAttributesDefinitions, mergeAttributeDefinitions } from "pacc";
 import { Service } from "@kronos-integration/service";
 import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
