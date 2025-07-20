@@ -51,7 +51,7 @@ export class ServiceSwarm extends Service {
         type: "string"
       }
     }),
-    super.configurationAttributes
+    Service.attributes
   );
 
   get topics() {
