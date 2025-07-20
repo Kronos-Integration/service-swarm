@@ -21,57 +21,53 @@ export class ServiceSwarm extends Service {
     return "swarm";
   }
 
-  static get configurationAttributes() {
-    return mergeAttributeDefinitions(
-      prepareAttributesDefinitions({
-        server: {
-          needsRestart: true,
-          default: false,
-          type: "boolean"
-        },
-        client: {
-          needsRestart: true,
-          default: false,
-          type: "boolean"
-        },
-        dht: {
-          description: "well known dht addresses",
-          needsRestart: true,
-          type: "object"
-        },
-        maxPeers: {
-          description: "total amount of peers that this peer will connect to",
-          default: 10,
-          needsRestart: true,
-          type: "integer"
-        },
-        key: {
-          description: "topic initial key",
-          needsRestart: true,
-          private: true,
-          type: "string"
-        }
-      }),
-      super.configurationAttributes
-    );
+  static attributes = mergeAttributeDefinitions(
+    prepareAttributesDefinitions({
+      server: {
+        needsRestart: true,
+        default: false,
+        type: "boolean"
+      },
+      client: {
+        needsRestart: true,
+        default: false,
+        type: "boolean"
+      },
+      dht: {
+        description: "well known dht addresses",
+        needsRestart: true,
+        type: "object"
+      },
+      maxPeers: {
+        description: "total amount of peers that this peer will connect to",
+        default: 10,
+        needsRestart: true,
+        type: "integer"
+      },
+      key: {
+        description: "topic initial key",
+        needsRestart: true,
+        private: true,
+        type: "string"
+      }
+    }),
+    super.configurationAttributes
+  );
+
+  get topics() {
+    if (!this._topics) {
+      this._topics = new Map();
+    }
+    return this._topics;
   }
 
-  get topics()
-  {
-  	if(!this._topics) {
-  		this._topics = new Map();
-  	}
-  	return this._topics;
-  }
-
-  get topicsByName()
-  {
-    if(!this._topicsByName) {
-       this._topicsByName = new Map(); 	
+  get topicsByName() {
+    if (!this._topicsByName) {
+      this._topicsByName = new Map();
     }
     return this._topicsByName;
   }
-  
+
   createTopic(name, options) {
     let topic = this.topicsByName.get(name);
     if (!topic) {
@@ -102,11 +98,12 @@ export class ServiceSwarm extends Service {
   }
 
   async _start() {
-    const swarm = this.swarm = new Hyperswarm({
+    const swarm = (this.swarm = new Hyperswarm({
       dht: this.dht,
-      maxPeers: this.maxPeers});
+      maxPeers: this.maxPeers
+    }));
 
-      /*
+    /*
     this.discovery = swarm.join(
       topic,
         ? {
