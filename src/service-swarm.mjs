@@ -1,7 +1,7 @@
 import { pipeline } from "node:stream";
 import Hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
-import { prepareAttributesDefinitions, mergeAttributeDefinitions } from "pacc";
+import { prepareAttributesDefinitions, private_key_attribute } from "pacc";
 import { Service } from "@kronos-integration/service";
 import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
@@ -21,8 +21,8 @@ export class ServiceSwarm extends Service {
     return "swarm";
   }
 
-  static attributes = mergeAttributeDefinitions(
-    prepareAttributesDefinitions({
+  static attributes = prepareAttributesDefinitions(
+    {
       server: {
         needsRestart: true,
         default: false,
@@ -45,12 +45,12 @@ export class ServiceSwarm extends Service {
         type: "integer"
       },
       key: {
+        ...private_key_attribute,
         description: "topic initial key",
         needsRestart: true,
-        private: true,
         type: "string"
       }
-    }),
+    },
     Service.attributes
   );
 
