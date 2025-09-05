@@ -34,7 +34,7 @@
     "@kronos-integration/service": "^13.2.8",
     "hyperswarm": "^4.12.1",
     "length-prefix-framed-stream": "^2.0.12",
-    "pacc": "^4.8.0"
+    "pacc": "^4.9.0"
   },
   "devDependencies": {
     "@hyperswarm/dht": "^6.5.1",
