@@ -1,7 +1,13 @@
 import { pipeline } from "node:stream";
 import Hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
-import { prepareAttributesDefinitions, private_key_attribute } from "pacc";
+import {
+  prepareAttributesDefinitions,
+  private_key_attribute,
+  boolean_attribute_false,
+  integer_attribute,
+  object_attribute
+} from "pacc";
 import { Service } from "@kronos-integration/service";
 import { Topic } from "./topic.mjs";
 import { TopicEndpoint } from "./topic-endpoint.mjs";
@@ -24,31 +30,28 @@ export class ServiceSwarm extends Service {
   static attributes = prepareAttributesDefinitions(
     {
       server: {
+        ...boolean_attribute_false,
         needsRestart: true,
-        default: false,
-        type: "boolean"
       },
       client: {
-        needsRestart: true,
-        default: false,
-        type: "boolean"
+        ...boolean_attribute_false,
+        needsRestart: true
       },
       dht: {
+        ...object_attribute,
         description: "well known dht addresses",
         needsRestart: true,
-        type: "object"
       },
       maxPeers: {
+        ...integer_attribute,
         description: "total amount of peers that this peer will connect to",
         default: 10,
-        needsRestart: true,
-        type: "integer"
+        needsRestart: true
       },
       key: {
         ...private_key_attribute,
         description: "topic initial key",
-        needsRestart: true,
-        type: "string"
+        needsRestart: true
       }
     },
     Service.attributes
