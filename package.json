@@ -30,11 +30,11 @@
     "lint:docs": "documentation lint ./src/**/*.mjs"
   },
   "dependencies": {
-    "@kronos-integration/endpoint": "^10.1.15",
-    "@kronos-integration/service": "^13.2.31",
+    "@kronos-integration/endpoint": "^10.1.18",
+    "@kronos-integration/service": "^13.2.33",
     "hyperswarm": "^4.14.0",
     "length-prefix-framed-stream": "^2.0.12",
-    "pacc": "^4.37.7"
+    "pacc": "^4.39.0"
   },
   "devDependencies": {
     "@hyperswarm/dht": "^6.5.1",
