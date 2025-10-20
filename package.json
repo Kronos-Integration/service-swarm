@@ -31,10 +31,10 @@
   },
   "dependencies": {
     "@kronos-integration/endpoint": "^10.1.19",
-    "@kronos-integration/service": "^13.2.39",
+    "@kronos-integration/service": "^13.2.40",
     "hyperswarm": "^4.14.0",
     "length-prefix-framed-stream": "^2.0.12",
-    "pacc": "^4.40.0"
+    "pacc": "^4.40.2"
   },
   "devDependencies": {
     "@hyperswarm/dht": "^6.5.1",
@@ -42,7 +42,7 @@
     "c8": "^10.1.3",
     "documentation": "^14.0.3",
     "nonsynchronous": "^1.2.0",
-    "semantic-release": "^25.0.0"
+    "semantic-release": "^25.0.1"
   },
   "engines": {
     "node": ">=22.19.5"
