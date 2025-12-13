@@ -29,7 +29,7 @@ export async function initialize() {
   const dht = new DHT(); // DHT.bootstrapper(49736);
   await dht.ready();
   
-  console.log("DHT", dht.address());
+  //console.log("DHT", dht.address());
 
   return {
     dht,
@@ -44,7 +44,7 @@ export async function initialize() {
 
       function done() {
         if (--missing) return;
-        node.destroy();
+      //  node.destroy();
       }
     }
   };
