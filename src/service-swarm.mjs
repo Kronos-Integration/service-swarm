@@ -177,12 +177,20 @@ export class ServiceSwarm extends Service {
   }
 
   async _stop() {
+    const swarm = this.swarm;
+    delete this.swarm;
+    this.swam = undefined;
+
     return Promise.all(
       [...this.topics.values()].map(topic => {
         this.trace(`leave topic ${topic.name}`);
-        return this.swarm.leave(topic.key);
+        return swarm.leave(topic.key);
       })
     );
+
+    await swarm.suspend({
+      log: (...args) => this.info(...args)
+    });
   }
 }
 
