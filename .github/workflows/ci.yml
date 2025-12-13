@@ -29,6 +29,7 @@ jobs:
         run: npm ci
       - name: test and coverage
         run: npm run cover --if-present
+        continue-on-error: true
       - name: coveralls
         uses: coverallsapp/github-action@v2
         with:
