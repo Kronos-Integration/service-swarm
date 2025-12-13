@@ -7,11 +7,6 @@ const PEERS_NAME_PREFIX = "peers.";
 
 /**
  * Endpoint to link against a swarm topic.
- * @param {string} name endpoint name
- * @param {Object} owner owner of the endpoint
- * @param {Object} options
- * @param {string} options.topic defaults to endpoint name (without @see PEERS_NAME_PREFIX)
- *
  * @property {Topic} topic
  */
 export class PeersEndpoint extends MultiSendEndpoint {
@@ -19,6 +14,16 @@ export class PeersEndpoint extends MultiSendEndpoint {
     return name.startsWith(PEERS_NAME_PREFIX);
   }
 
+  topic;
+  socket;
+  
+  /**
+   * @param {string} name endpoint name
+   * @param {Object} owner owner of the endpoint
+   * @param {Object} options
+   * @param {string} options.topic defaults to endpoint name (without @see PEERS_NAME_PREFIX)
+   *
+   */
   constructor(name, owner, options) {
     super(name, owner, options);
 

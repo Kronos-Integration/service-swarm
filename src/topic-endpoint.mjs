@@ -9,10 +9,6 @@ const TOPIC_NAME_PREFIX = "topic.";
 
 /**
  * Endpoint to link against a swarm topic.
- * @param {string} name endpoint name
- * @param {Object} owner owner of the endpoint
- * @param {Object} options
- * @param {string} options.topic defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
  * @property {Topic} topic
  */
 export class TopicEndpoint extends MultiSendEndpoint {
@@ -23,6 +19,12 @@ export class TopicEndpoint extends MultiSendEndpoint {
   sockets = new Set();
   encode = new Encode();
 
+  /**
+   * @param {string} name endpoint name
+   * @param {Object} owner owner of the endpoint
+   * @param {Object} options
+   * @param {string} options.topic defaults to endpoint name (without @see TOPIC_NAME_PREFIX)
+   */
   constructor(name, owner, options) {
     super(name, owner, options);
 
@@ -34,7 +36,7 @@ export class TopicEndpoint extends MultiSendEndpoint {
   }
 
   async addSocket(socket) {
-    if(this.sockets.has(socket)) {
+    if (this.sockets.has(socket)) {
       this.owner.error(`socket already present`);
       return;
     }
