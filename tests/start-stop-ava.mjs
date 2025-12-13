@@ -1,15 +1,15 @@
 import test from "ava";
-import { initialize, wait, publicAddress } from "./helpers/util.mjs";
+import { initialize, wait } from "./helpers/util.mjs";
 import { StandaloneServiceProvider } from "@kronos-integration/service";
 import { ReceiveEndpoint } from "@kronos-integration/endpoint";
 import { ServiceSwarm } from "@kronos-integration/service-swarm";
 
-test.skip("start / stop", async t => {
+test("start / stop", async t => {
   const sp = new StandaloneServiceProvider();
-  const key = "11-3232-334545-fff-ggff6f-gr-df58";
+  const seed = "11-3232-334545-fff-ggff6f-gr-df58";
   const { dht, close } = await initialize();
 
-  let peers1;
+  let peers1, receive1;
 
   const options = {
     receive: r => {
@@ -29,8 +29,8 @@ test.skip("start / stop", async t => {
     type: ServiceSwarm,
     name: "serviceSwarm1",
     server: true,
-    logLevel: "trace",
-    key,
+    //logLevel: "trace",
+    seed,
     endpoints: {
       "topic.t1": {
         connected: s1
@@ -43,14 +43,15 @@ test.skip("start / stop", async t => {
     }
   });
 
-        /*
-    */
-
   t.is(serviceSwarm1.endpoints["topic.t1"].name, "topic.t1");
+  t.is(serviceSwarm1.topicsByName.get("t1").name, "t1");
+  t.deepEqual([...serviceSwarm1.topicsByName.keys()], ["t1"]);
+
   t.is(
     serviceSwarm1.endpoints["topic.t1"].topic,
     serviceSwarm1.topicsByName.get("t1")
   );
+
   t.true(
     serviceSwarm1.topicsByName
       .get("t1")
@@ -68,9 +69,9 @@ test.skip("start / stop", async t => {
     type: ServiceSwarm,
     name: "serviceSwarm2",
     client: true,
-    logLevel: "trace",
-    key,
-    dht,
+    //logLevel: "trace",
+    seed,
+    //dht,
     endpoints: {
       "topic.t1": { connected: s2, announce: false }
     }
@@ -84,14 +85,14 @@ test.skip("start / stop", async t => {
   t.true(serviceSwarm1.endpoints["topic.t1"].isConnected(s1));
   t.true(serviceSwarm2.endpoints["topic.t1"].isConnected(s2));
 
-  console.log(await publicAddress());
+  //console.log(await publicAddress());
 
   await wait(5000);
 
   t.truthy(peers1);
   //t.truthy(peers1.length > 1);
 
-  console.log(peers1);
+  //console.log(peers1);
 
   //t.truthy(serviceSwarm1.endpoints["topic.t1"].sockets.length > 0);
 
@@ -104,5 +105,5 @@ test.skip("start / stop", async t => {
   t.is(serviceSwarm1.state, "stopped");
   t.is(serviceSwarm2.state, "stopped");
 
-  await close();
+  // await close();
 });

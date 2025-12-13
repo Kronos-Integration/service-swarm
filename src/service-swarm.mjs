@@ -2,6 +2,7 @@ import { pipeline } from "node:stream";
 import Hyperswarm from "hyperswarm";
 import { Decode, Encode } from "length-prefix-framed-stream";
 import {
+  getAttributesJSON,
   prepareAttributesDefinitions,
   private_key_attribute,
   boolean_attribute_false,
@@ -17,9 +18,6 @@ import { PeersEndpoint } from "./peers-endpoint.mjs";
  * Swarm detecting sync service.
  */
 export class ServiceSwarm extends Service {
-  _topics; // = new Map();
-  _topicsByName; // = new Map();
-
   /**
    * @return {string} 'swarm'
    */
@@ -31,7 +29,7 @@ export class ServiceSwarm extends Service {
     {
       server: {
         ...boolean_attribute_false,
-        needsRestart: true,
+        needsRestart: true
       },
       client: {
         ...boolean_attribute_false,
@@ -41,16 +39,18 @@ export class ServiceSwarm extends Service {
         ...object_attribute,
         description: "well known dht addresses",
         needsRestart: true,
+        connectionOption: true
       },
       maxPeers: {
         ...integer_attribute,
         description: "total amount of peers that this peer will connect to",
         default: 10,
-        needsRestart: true
+        needsRestart: true,
+        connectionOption: true
       },
-      key: {
+      seed: {
         ...private_key_attribute,
-        description: "topic initial key",
+        description: "key pair seed",
         needsRestart: true
       }
     },
@@ -86,7 +86,8 @@ export class ServiceSwarm extends Service {
    * On demand create topic endpoints.
    * @param {string} name
    * @param {Object|string} definition
-   * @return {Class} TopicEndpoint if name starts with 'topic.'
+   * @param {InitializationContext} ic
+   * @return {Object} TopicEndpoint if name starts with 'topic.'
    */
   endpointFactoryFromConfig(name, definition, ic) {
     if (TopicEndpoint.isTopicName(name)) {
@@ -102,19 +103,13 @@ export class ServiceSwarm extends Service {
 
   async _start() {
     const swarm = (this.swarm = new Hyperswarm({
-      dht: this.dht,
-      maxPeers: this.maxPeers
+      ...getAttributesJSON(
+        this,
+        this.attributes,
+        (name, attribute) => attribute.connectionOption
+      ),
+      ...(await this.getCredentials())
     }));
-
-    /*
-    this.discovery = swarm.join(
-      topic,
-        ? {
-            server: this.server,
-            client: this.client
-          }
-    );
-    */
 
     swarm.on("update", () => {
       console.log("Hyperswarm update", swarm);
@@ -175,12 +170,8 @@ export class ServiceSwarm extends Service {
     await Promise.all(
       [...this.topics.values()].map(topic => {
         this.trace(`join topic ${topic.name} ${JSON.stringify(topic.options)}`);
-        return new Promise(resolve => {
-          this.swarm.join(topic.key, topic.options, () => {
-            this.trace(`joined topic ${topic.name}`);
-            resolve();
-          });
-        });
+        const discovery = this.swarm.join(topic.key, topic.options);
+        return discovery.flushed();
       })
     );
   }
@@ -189,12 +180,7 @@ export class ServiceSwarm extends Service {
     return Promise.all(
       [...this.topics.values()].map(topic => {
         this.trace(`leave topic ${topic.name}`);
-        return new Promise(resolve => {
-          this.swarm.join(topic.key, () => {
-            this.trace(`leaved topic ${topic.name}`);
-            resolve();
-          });
-        });
+        return this.swarm.leave(topic.key);
       })
     );
   }
