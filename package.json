@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@kronos-integration/endpoint": "^11.0.8",
-    "@kronos-integration/service": "^15.4.2",
+    "@kronos-integration/service": "^15.4.3",
     "hyperswarm": "^4.16.0",
     "length-prefix-framed-stream": "^2.0.12",
     "pacc": "^6.8.1"
