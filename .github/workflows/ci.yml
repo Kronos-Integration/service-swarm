@@ -31,7 +31,7 @@ jobs:
         run: npm run cover --if-present
         continue-on-error: true
       - name: coveralls
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           flag-name: run-${{ matrix.test_number }}
